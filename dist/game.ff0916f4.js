@@ -117,7 +117,56 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"game/classes/Hopper.js":[function(require,module,exports) {
+})({"game/domElements.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.class_editPanels = exports.panel_loadBoard = exports.panel_saveBoard = exports.panel_playing = exports.panel_lowerEdit = exports.panel_editor = exports.panel_debug = exports.input_newHoppersToSave = exports.input_newLevelName = exports.input_levelToLoad = exports.info_toSave = exports.info_levelName = exports.info_edited = exports.btn_save = exports.btn_new = exports.btn_load = exports.btn_showLoader = exports.btn_playLevel = exports.btn_levelEditor = exports.btn_backToUnedited = exports.tileIcons = void 0;
+var tileIcons = document.querySelectorAll(".tile-icon");
+exports.tileIcons = tileIcons;
+var btn_backToUnedited = document.getElementById("back-to-unedited");
+exports.btn_backToUnedited = btn_backToUnedited;
+var btn_levelEditor = document.getElementById("level-editor");
+exports.btn_levelEditor = btn_levelEditor;
+var btn_playLevel = document.getElementById("play-level");
+exports.btn_playLevel = btn_playLevel;
+var btn_showLoader = document.getElementById("launch-loader");
+exports.btn_showLoader = btn_showLoader;
+var btn_load = document.getElementById("load");
+exports.btn_load = btn_load;
+var btn_new = document.getElementById("new");
+exports.btn_new = btn_new;
+var btn_save = document.getElementById("save");
+exports.btn_save = btn_save;
+var info_edited = document.getElementById("edited");
+exports.info_edited = info_edited;
+var info_levelName = document.getElementById("level-name");
+exports.info_levelName = info_levelName;
+var info_toSave = document.getElementById("to-save");
+exports.info_toSave = info_toSave;
+var input_levelToLoad = document.getElementById("level-to-load");
+exports.input_levelToLoad = input_levelToLoad;
+var input_newLevelName = document.getElementById("new-level-name");
+exports.input_newLevelName = input_newLevelName;
+var input_newHoppersToSave = document.getElementById("new-hoppers-to-save");
+exports.input_newHoppersToSave = input_newHoppersToSave;
+var panel_debug = document.getElementById("debug-panel");
+exports.panel_debug = panel_debug;
+var panel_editor = document.getElementById("editor-panel");
+exports.panel_editor = panel_editor;
+var panel_lowerEdit = document.getElementById("lower-edit-panel");
+exports.panel_lowerEdit = panel_lowerEdit;
+var panel_playing = document.getElementById("playing-panel");
+exports.panel_playing = panel_playing;
+var panel_saveBoard = document.getElementById("panel-save-board");
+exports.panel_saveBoard = panel_saveBoard;
+var panel_loadBoard = document.getElementById("panel-load-board");
+exports.panel_loadBoard = panel_loadBoard;
+var class_editPanels = document.querySelectorAll(".edit-panel");
+exports.class_editPanels = class_editPanels;
+},{}],"game/classes/Hopper.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -408,7 +457,7 @@ function () {
 }();
 
 exports.default = Hopper;
-},{"../game.js":"game/game.js"}],"game/levels.json":[function(require,module,exports) {
+},{"../game.js":"game/game.js"}],"game/data/levels.json":[function(require,module,exports) {
 module.exports = [{
   "name": "The Easy One",
   "hoppers": {
@@ -544,73 +593,60 @@ module.exports = [{
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.drawLeftArrow = drawLeftArrow;
-exports.drawRightArrow = drawRightArrow;
+exports.activatePlayMode = activatePlayMode;
+exports.activateLevelEditor = activateLevelEditor;
 exports.createGameBoardCopy = createGameBoardCopy;
 exports.setHomeAddresses = setHomeAddresses;
-exports.drawGameBoard = drawGameBoard;
-exports.killAHopper = killAHopper;
-exports.spawnSingleHopper = spawnSingleHopper;
-exports.spawnHoppers = spawnHoppers;
-exports.saveLevel = saveLevel;
-exports.launchLoader = launchLoader;
-exports.loadLevel = loadLevel;
 exports.clearBoard = clearBoard;
 exports.loadNextLevel = loadNextLevel;
-exports.hideFilePanel = hideFilePanel;
+exports.generateLevelJSON = generateLevelJSON;
+
+var dom = _interopRequireWildcard(require("./domElements"));
 
 var _game = require("./game.js");
 
 var _Hopper = _interopRequireDefault(require("./classes/Hopper.js"));
 
-var _levels = _interopRequireDefault(require("./levels.json"));
+var _levels = _interopRequireDefault(require("./data/levels.json"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function drawLeftArrow(x, y) {
-  _game.c.save();
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
-  _game.c.beginPath();
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-  _game.c.fillStyle = _game.config.colors.movable;
-  _game.c.strokeStyle = _game.config.colors.movable;
+// import * as hopperFunctions from "./functions.js";
+function activatePlayMode() {
+  if (_game.hoppers.length < 1) {
+    _game.level.hoppers.current = 0;
+    _game.level.hoppers.free = 0;
+    _game.level.hoppers.max = _game.level.new ? _levels.default[_game.level.current].hoppers.max : _game.level.hoppers.max;
+  }
 
-  _game.c.moveTo(x * _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing / 2);
-
-  _game.c.lineTo(x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing);
-
-  _game.c.lineTo(x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing);
-
-  _game.c.lineTo(x * _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing / 2);
-
-  _game.c.stroke();
-
-  _game.c.fill();
-
-  _game.c.restore();
+  _game.selector.x = 99999;
+  _game.selector.y = 99999;
+  _game.selector.homeX = null;
+  _game.selector.homeY = null;
+  _game.selector.dragging = false;
+  _game.selector.draggingBlock = false;
+  _game.selector.whatBlockWas = null;
+  _game.config.mode = "play";
 }
 
-function drawRightArrow(x, y) {
-  _game.c.save();
-
-  _game.c.beginPath();
-
-  _game.c.fillStyle = _game.config.colors.movable;
-  _game.c.strokeStyle = _game.config.colors.movable;
-
-  _game.c.moveTo(x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing / 2);
-
-  _game.c.lineTo(x * _game.config.board.spacing, y * _game.config.board.spacing);
-
-  _game.c.lineTo(x * _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing);
-
-  _game.c.lineTo(x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing / 2);
-
-  _game.c.stroke();
-
-  _game.c.fill();
-
-  _game.c.restore();
+function activateLevelEditor() {
+  _game.dragger.x = null;
+  _game.dragger.y = null;
+  _game.dragger.homeX = null;
+  _game.dragger.homeY = null;
+  _game.dragger.dragging = false;
+  _game.dragger.draggingBlock = false;
+  _game.dragger.whatBlockWas = null;
+  _game.painter.x = null;
+  _game.painter.y = null;
+  _game.painter.dragging = false;
+  _game.painter.blockType = "2";
+  _game.config.mode = "editor";
+  _game.editor.mode = "none";
 }
 
 function createGameBoardCopy(board) {
@@ -650,82 +686,204 @@ function setHomeAddresses() {
   }
 }
 
+function clearBoard() {
+  for (var y = 0; y < _game.config.board.size; y++) {
+    for (var x = 0; x < _game.config.board.size; x++) {
+      _game.gameBoard[y][x] = "0";
+    }
+  }
+
+  _game.hoppers.splice(0, _game.hoppers.length);
+
+  _game.level.hoppers.max = 1;
+  _game.level.new = true;
+}
+
+function loadNextLevel() {
+  _game.level.new = false;
+  _game.level.current += 1;
+  _game.selector.x = 10000;
+  _game.selector.y = 10000;
+  (0, _game.init)();
+} // Save and load.
+
+
+function generateLevelJSON() {
+  var newMax = dom.input_newHoppersToSave.value;
+
+  if (newMax <= 0) {
+    newMax = 1;
+  } else {
+    _game.level.hoppers.max = newMax;
+  }
+
+  return {
+    name: dom.input_newLevelName.value,
+    hoppers: {
+      max: newMax,
+      releaseRate: 100
+    },
+    map: _game.gameBoard
+  };
+}
+},{"./domElements":"game/domElements.js","./game.js":"game/game.js","./classes/Hopper.js":"game/classes/Hopper.js","./data/levels.json":"game/data/levels.json"}],"game/functions/canvas.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.drawGameBoard = drawGameBoard;
+exports.clearScreen = clearScreen;
+
+var _game = require("../game.js");
+
 function drawGameBoard() {
   for (var y = 0; y < _game.config.board.size; y++) {
     for (var x = 0; x < _game.config.board.size; x++) {
-      var isArrow = false;
-
       switch (_game.gameBoard[y][x]) {
         case "0":
-          _game.c.fillStyle = _game.config.colors.empty;
+          drawBlock(x, y, _game.config.colors.empty);
           break;
 
         case "1":
-          _game.c.fillStyle = _game.config.colors.movable;
+          drawBlock(x, y, _game.config.colors.movable);
           break;
 
         case "2":
-          _game.c.fillStyle = _game.config.colors.immovable;
+          drawBlock(x, y, _game.config.colors.immovable);
           break;
 
         case "3":
-          _game.c.fillStyle = _game.config.colors.spawn;
+          drawBlock(x, y, _game.config.colors.spawn);
           break;
 
         case "4":
-          _game.c.fillStyle = _game.config.colors.exit;
+          drawBlock(x, y, _game.config.colors.exit);
           break;
 
         case "5":
-          _game.c.fillStyle = _game.config.colors.immovable;
-          isArrow = true;
+          drawBlock(x, y, _game.config.colors.immovable);
+          drawLeftArrow(x, y);
           break;
 
         case "6":
-          _game.c.fillStyle = _game.config.colors.immovable;
-          isArrow = true;
+          drawBlock(x, y, _game.config.colors.immovable);
+          drawRightArrow(x, y);
           break;
       }
 
-      _game.c.save();
-
-      _game.c.beginPath();
-
-      _game.c.fillRect(x * _game.config.board.spacing, y * _game.config.board.spacing, x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing);
-
-      _game.c.fill();
-
-      _game.c.closePath();
-
-      _game.c.restore();
-
-      if (isArrow && _game.gameBoard[y][x] == "5") {
-        drawLeftArrow(x, y);
-      } else if (isArrow && _game.gameBoard[y][x] == "6") {
-        drawRightArrow(x, y);
-      } // Draw Grid
-
-
-      if (_game.config.mode == "editor") {
-        _game.c.save();
-
-        _game.c.beginPath(); // c.shadowColor = "white";
-        // c.shadowBlur = config.blurAmount;
-
-
-        _game.c.fillStyle = "white";
-
-        _game.c.arc(x * _game.config.board.spacing, y * _game.config.board.spacing, 1, 0, Math.PI * 2, true);
-
-        _game.c.fill();
-
-        _game.c.closePath();
-
-        _game.c.restore();
-      }
+      if (_game.config.mode == "editor") drawGrid(x, y);
     }
   }
+
+  function drawBlock(x, y, color) {
+    _game.c.save();
+
+    _game.c.beginPath();
+
+    _game.c.fillStyle = color;
+
+    _game.c.fillRect(x * _game.config.board.spacing, y * _game.config.board.spacing, x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing);
+
+    _game.c.fill();
+
+    _game.c.closePath();
+
+    _game.c.restore();
+  }
+
+  function drawLeftArrow(x, y) {
+    _game.c.save();
+
+    _game.c.beginPath();
+
+    _game.c.fillStyle = _game.config.colors.movable;
+    _game.c.strokeStyle = _game.config.colors.movable;
+
+    _game.c.moveTo(x * _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing / 2);
+
+    _game.c.lineTo(x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing);
+
+    _game.c.lineTo(x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing);
+
+    _game.c.lineTo(x * _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing / 2);
+
+    _game.c.stroke();
+
+    _game.c.fill();
+
+    _game.c.restore();
+  }
+
+  function drawRightArrow(x, y) {
+    _game.c.save();
+
+    _game.c.beginPath();
+
+    _game.c.fillStyle = _game.config.colors.movable;
+    _game.c.strokeStyle = _game.config.colors.movable;
+
+    _game.c.moveTo(x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing / 2);
+
+    _game.c.lineTo(x * _game.config.board.spacing, y * _game.config.board.spacing);
+
+    _game.c.lineTo(x * _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing);
+
+    _game.c.lineTo(x * _game.config.board.spacing + _game.config.board.spacing, y * _game.config.board.spacing + _game.config.board.spacing / 2);
+
+    _game.c.stroke();
+
+    _game.c.fill();
+
+    _game.c.restore();
+  }
+
+  function drawGrid(x, y) {
+    _game.c.save();
+
+    _game.c.beginPath();
+
+    _game.c.fillStyle = "white";
+
+    _game.c.arc(x * _game.config.board.spacing, y * _game.config.board.spacing, 1, 0, Math.PI * 2, true);
+
+    _game.c.fill();
+
+    _game.c.closePath();
+
+    _game.c.restore();
+  }
 }
+
+function clearScreen() {
+  _game.c.fillStyle = "black";
+
+  _game.c.fillRect(0, 0, _game.canvas.width, _game.canvas.height);
+
+  _game.c.fill();
+}
+},{"../game.js":"game/game.js"}],"game/functions/hopper.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.killAHopper = killAHopper;
+exports.spawnSingleHopper = spawnSingleHopper;
+exports.spawnHoppers = spawnHoppers;
+exports.resetHoppers = resetHoppers;
+
+var dom = _interopRequireWildcard(require("../domElements.js"));
+
+var _game = require("../game.js");
+
+var _Hopper = _interopRequireDefault(require("../classes/Hopper.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function killAHopper() {
   if (_game.hoppers.length > 0) {
@@ -738,14 +896,21 @@ function killAHopper() {
 
 function spawnSingleHopper() {
   var currentSpawnPoint = _game.level.hoppers.current % _game.spawnPoints.length;
+  var halfWayAcrossSpawnPoint = _game.spawnPoints[currentSpawnPoint].x * _game.config.board.spacing + _game.config.board.spacing / 2;
+  var topOfSpawnPoint = _game.spawnPoints[currentSpawnPoint].y * _game.config.board.spacing;
 
-  try {
-    _game.hoppers.push(new _Hopper.default(_game.spawnPoints[currentSpawnPoint].x * _game.config.board.spacing + _game.config.board.spacing / 2, _game.spawnPoints[currentSpawnPoint].y * _game.config.board.spacing));
-  } catch (_unused) {
-    _game.hoppers.push(new _Hopper.default(_game.config.board.spacing / 2, 0));
+  if (_game.hoppers.length < _game.config.hopper.limit) {
+    try {
+      _game.hoppers.push(new _Hopper.default(halfWayAcrossSpawnPoint, topOfSpawnPoint));
+    } catch (_unused) {
+      _game.hoppers.push(new _Hopper.default(_game.config.board.spacing / 2, 0));
+    }
   }
 
+  console.log(_game.hoppers.length);
   _game.level.hoppers.current = _game.hoppers.length;
+  _game.level.hoppers.max = _game.hoppers.length;
+  dom.info_toSave.innerHTML = _game.level.hoppers.max;
 }
 
 function spawnHoppers() {
@@ -753,148 +918,34 @@ function spawnHoppers() {
     return _game.frame == 0 || _game.frame % _game.level.hoppers.releaseRate == 0;
   };
 
-  if (_game.level.hoppers.max > _game.level.hoppers.current + _game.level.hoppers.free && timeToSpawnHopper()) {
+  var notEnoughHoppers = _game.level.hoppers.max > _game.level.hoppers.current + _game.level.hoppers.free && _game.hoppers.length < _game.config.hopper.limit;
+
+  if (notEnoughHoppers && timeToSpawnHopper()) {
     spawnSingleHopper();
   }
 }
 
-function saveLevel() {
-  var gameBoardGenerator = document.getElementById("game-board-generator");
-  var gameBoardLoader = document.getElementById("game-board-loader");
-  var newLevelName = document.getElementById("new-level-name");
-  var newHoppersToSave = document.getElementById("new-hoppers-to-save");
-
-  if (parseInt(newHoppersToSave.value) <= 0 || typeof parseInt(newHoppersToSave.value) != "Number") {
-    // newHoppersToSave.value = 1;
-    _game.level.hoppers.max = 1;
-  } else {
-    _game.level.hoppers.max = newHoppersToSave.value;
-  }
-
-  var newLevel = {
-    name: newLevelName.value,
-    hoppers: {
-      max: newHoppersToSave.value,
-      releaseRate: 100
-    },
-    map: _game.gameBoard
-  };
-
-  if (gameBoardGenerator.classList.contains("hidden")) {
-    gameBoardGenerator.classList.remove("hidden");
-  }
-
-  if (!gameBoardLoader.classList.contains("hidden")) {
-    gameBoardLoader.classList.add("hidden");
-  }
-
-  gameBoardGenerator.innerHTML = "<h4>Save this string somewhere:</h4><div class='json'>" + JSON.stringify(newLevel) + "</div>";
-}
-
-function launchLoader() {
-  var gameBoardGenerator = document.getElementById("game-board-generator");
-  var gameBoardLoader = document.getElementById("game-board-loader");
-
-  if (gameBoardLoader.classList.contains("hidden")) {
-    gameBoardLoader.classList.remove("hidden");
-  }
-
-  if (!gameBoardGenerator.classList.contains("hidden")) {
-    gameBoardGenerator.classList.add("hidden");
-  }
-}
-
-function loadLevel(levelInfo) {
-  levelInfo = JSON.parse(levelInfo); // const debugPanel = document.getElementById("debug-panel");
-
-  if (levelInfo.hoppers.max > 0) {
-    _game.level.hoppers.max = levelInfo.hoppers.max;
-  } else {
-    _game.level.hoppers.max = 1;
-  }
-
-  _game.config.mode = "play";
+function resetHoppers() {
   _game.level.hoppers.current = 0;
   _game.level.hoppers.free = 0;
-  _game.info_levelName.innerHTML = levelInfo.name;
-  _game.info_toSave.innerHTML = _game.level.hoppers.max; // debugPanel.innerHTML = "Playing level";
 
   _game.hoppers.splice(0, _game.hoppers.length);
-
-  createGameBoardCopy(levelInfo.map);
-  setHomeAddresses();
-  spawnSingleHopper();
 }
-
-function clearBoard() {
-  hideFilePanel();
-
-  for (var y = 0; y < _game.config.board.size; y++) {
-    for (var x = 0; x < _game.config.board.size; x++) {
-      _game.gameBoard[y][x] = "0";
-    }
-  }
-
-  _game.hoppers.splice(0, _game.hoppers.length);
-
-  _game.level.hoppers.max = 1;
-  _game.level.new = true;
-
-  if (_game.info_edited.classList.contains("hidden")) {
-    _game.info_edited.classList.remove("hidden");
-  }
-}
-
-function loadNextLevel() {
-  _game.level.new = false;
-  _game.level.current += 1;
-  _game.selector.x = 10000;
-  _game.selector.y = 10000;
-  (0, _game.init)();
-}
-
-function hideFilePanel() {
-  var gameBoardGenerator = document.getElementById("game-board-generator");
-  var gameBoardLoader = document.getElementById("game-board-loader");
-
-  if (!gameBoardGenerator.classList.contains("hidden")) {
-    gameBoardGenerator.classList.add("hidden");
-  }
-
-  if (!gameBoardLoader.classList.contains("hidden")) {
-    gameBoardLoader.classList.add("hidden");
-  }
-}
-},{"./game.js":"game/game.js","./classes/Hopper.js":"game/classes/Hopper.js","./levels.json":"game/levels.json"}],"game/eventListeners.js":[function(require,module,exports) {
+},{"../domElements.js":"game/domElements.js","../game.js":"game/game.js","../classes/Hopper.js":"game/classes/Hopper.js"}],"game/eventListeners/mouse.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.btn_backToUnedited = exports.btn_playLevel = exports.btn_levelEditor = exports.playingPanel = exports.editorPanel = exports.debugPanel = exports.mousedown = exports.mouse = void 0;
-
-var _game = require("./game.js");
-
-var _levels = _interopRequireDefault(require("./levels.json"));
-
-var functions = _interopRequireWildcard(require("./functions.js"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+exports.mousedown = exports.mouse = void 0;
 var mouse = {
   x: 900,
   y: 900
 };
 exports.mouse = mouse;
-var mousedown = false;
-exports.mousedown = mousedown;
-var newLevelName = document.getElementById("new-level-name");
-var newHoppersToSave = document.getElementById("new-hoppers-to-save"); // Mouse events
+var mousedown = false; // Mouse events
 
+exports.mousedown = mousedown;
 window.addEventListener("mousemove", function () {
   mouse.x = event.x;
   mouse.y = event.y;
@@ -904,194 +955,8 @@ window.addEventListener("mousedown", function () {
 });
 window.addEventListener("mouseup", function () {
   exports.mousedown = mousedown = false;
-}); // Game play
-
-window.addEventListener("keyup", function (e) {
-  if ((e.key == "p" || e.key == "P") && !(newLevelName === document.activeElement)) {
-    _game.level.paused = !_game.level.paused;
-    document.getElementById("paused").classList.toggle("hidden");
-  }
-}); // Playing only
-
-window.addEventListener("keyup", function (e) {
-  if ((e.key == "r" || e.key == "R") && _game.config.mode == "play") {
-    if (_game.level.new) {
-      _game.level.hoppers.current = 0;
-      _game.level.hoppers.free = 0;
-
-      _game.hoppers.splice(0, _game.hoppers.length); // functions.createGameBoardCopy(levels[level.current].map)
-
-
-      functions.setHomeAddresses(); // frame = -1;
-      // config.colors.movable = palettes[level.current % palettes.length]
-
-      playLevel();
-    } else {
-      (0, _game.init)();
-    }
-  }
-}); // Editor only
-
-window.addEventListener("keyup", function (e) {
-  if ((e.key == "s" || e.key == "S") && _game.config.mode == "editor" && !(newLevelName === document.activeElement)) {
-    _game.level.hoppers.max += 1;
-    functions.spawnSingleHopper();
-    _game.level.new = true;
-  }
 });
-window.addEventListener("keyup", function (e) {
-  if ((e.key == "k" || e.key == "K") && _game.config.mode == "editor" && !(newLevelName === document.activeElement)) {
-    functions.killAHopper();
-    _game.level.new = true;
-  }
-}); // Game mode
-
-var debugPanel = document.getElementById("debug-panel");
-exports.debugPanel = debugPanel;
-var editorPanel = document.getElementById("editor-panel");
-exports.editorPanel = editorPanel;
-var playingPanel = document.getElementById("playing-panel");
-exports.playingPanel = playingPanel;
-var btn_levelEditor = document.getElementById("level-editor");
-exports.btn_levelEditor = btn_levelEditor;
-var btn_playLevel = document.getElementById("play-level");
-exports.btn_playLevel = btn_playLevel;
-var btn_backToUnedited = document.getElementById("back-to-unedited");
-exports.btn_backToUnedited = btn_backToUnedited;
-
-function revealEditorPanel() {
-  if (editorPanel.classList.contains("hidden")) {
-    editorPanel.classList.remove("hidden");
-    playingPanel.classList.add("hidden");
-  } // debugPanel.innerHTML = "Editing level";
-
-}
-
-function revealPlayingPanel() {
-  functions.hideFilePanel();
-
-  if (!editorPanel.classList.contains("hidden")) {
-    editorPanel.classList.add("hidden");
-    playingPanel.classList.remove("hidden");
-  }
-}
-
-function editLevel() {
-  revealEditorPanel();
-  _game.dragger.x = null;
-  _game.dragger.y = null;
-  _game.dragger.homeX = null;
-  _game.dragger.homeY = null;
-  _game.dragger.dragging = false;
-  _game.dragger.draggingBlock = false;
-  _game.dragger.whatBlockWas = null;
-  _game.painter.x = null;
-  _game.painter.y = null;
-  _game.painter.dragging = false;
-  _game.painter.blockType = "2";
-  _game.config.mode = "editor";
-}
-
-function playLevel() {
-  revealPlayingPanel();
-
-  if (_game.config.mode == "editor") {
-    functions.setHomeAddresses();
-  }
-
-  if (_game.hoppers.length < 1) {
-    _game.level.hoppers.current = 0;
-    _game.level.hoppers.free = 0;
-    _game.level.hoppers.max = _game.level.new ? _levels.default[_game.level.current].hoppers.max : _game.level.hoppers.max; // functions.spawnSingleHopper();
-  }
-
-  _game.selector.x = 99999;
-  _game.selector.y = 99999;
-  _game.selector.homeX = null;
-  _game.selector.homeY = null;
-  _game.selector.dragging = false;
-  _game.selector.draggingBlock = false;
-  _game.selector.whatBlockWas = null;
-  _game.config.mode = "play";
-}
-
-btn_playLevel.addEventListener("click", function () {
-  functions.hideFilePanel();
-  playLevel();
-});
-btn_levelEditor.addEventListener("click", function () {
-  editLevel();
-  _game.editor.mode = "drag";
-  functions.hideFilePanel();
-});
-btn_backToUnedited.addEventListener("click", _game.init); // Level editor
-
-var btn_save = document.getElementById("save");
-btn_save.addEventListener("click", functions.saveLevel);
-var btn_launchLoader = document.getElementById("launch-loader");
-btn_launchLoader.addEventListener("click", functions.launchLoader);
-var levelToLoad = document.getElementById("level-to-load");
-var btn_load = document.getElementById("load");
-btn_load.addEventListener("click", function () {
-  functions.loadLevel(levelToLoad.value);
-  playLevel();
-});
-var btn_clear = document.getElementById("clear");
-btn_clear.addEventListener("click", function () {
-  functions.clearBoard();
-  functions.hideFilePanel();
-});
-var painters = document.querySelectorAll(".painter");
-painters.forEach(function (painterIcon) {
-  painterIcon.addEventListener("click", function () {
-    _game.editor.mode = "paint";
-    _game.painter.x = 99999;
-    _game.painter.y = 9999;
-    _game.painter.dragging = false;
-    _game.painter.blockType = painterIcon.dataset.blockType;
-
-    if (!painterIcon.classList.contains("selected")) {
-      painters.forEach(function (icon) {
-        return icon.classList.remove("selected");
-      });
-      painterIcon.classList.add("selected");
-    }
-
-    functions.hideFilePanel();
-  });
-});
-window.addEventListener("keydown", function (e) {
-  if (e.key == "Shift") {
-    painters.forEach(function (icon) {
-      return icon.classList.remove("selected");
-    });
-    _game.editor.mode = "drag";
-  }
-});
-window.addEventListener("keyup", function (e) {
-  if (e.key == "Shift") {
-    _game.editor.mode = "none";
-  }
-});
-newLevelName.addEventListener("input", function (e) {
-  _game.info_levelName.innerHTML = newLevelName.value;
-});
-newHoppersToSave.addEventListener("input", function (e) {
-  if (parseInt(newHoppersToSave.value) <= 0 || typeof parseInt(newHoppersToSave.value) != "Number") {
-    // newHoppersToSave.value = 1
-    _game.level.hoppers.max = 1;
-  } else {
-    _game.level.hoppers.max = newHoppersToSave.value;
-  }
-
-  _game.info_toSave.innerHTML = newHoppersToSave.value;
-  _game.level.new = true;
-
-  if (_game.info_edited.classList.contains("hidden")) {
-    _game.info_edited.classList.remove("hidden");
-  }
-});
-},{"./game.js":"game/game.js","./levels.json":"game/levels.json","./functions.js":"game/functions.js"}],"game/classes/Selector.js":[function(require,module,exports) {
+},{}],"game/classes/Selector.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1101,7 +966,7 @@ exports.default = void 0;
 
 var _game = require("../game.js");
 
-var _eventListeners = require("../eventListeners.js");
+var _mouse = require("../eventListeners/mouse.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1109,22 +974,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// During init() we log all movable blocks and create an array of objects that stores the block's home address
-// and current address. Initially home and current are the same.
-// When user first drags a block, its home address is stored in this selector object.
-// Then when user drags the block to another location, we search the 'addresses' array
-// for an object that matches the home address stored in this selector.
-// Its new location is then stored in 'current'.
-// The implication of this is that when the user goes to drag the block again, we loop through this process
-// Only this time, the current address is different to the home address.
-// The home address is referenced when dragging the block around, so that we can't pull the block
-// more than one square away in any direction.
-// Doing things this way means we don't have to have an object for every block, which
-// gives primacy to the level map.
-// This makes life easier when it comes to being able to edit levels etc.
-// We also don't have to loop through a list of block objects every frame, because collisions are handled by
-// the hopper object which only checks for collisions within one square of itself,
-// and the loops in this object are only called when we drag a block.
 var Selector =
 /*#__PURE__*/
 function () {
@@ -1145,8 +994,8 @@ function () {
     value: function update() {
       var _this = this;
 
-      var mouseGridX = Math.floor(_eventListeners.mouse.x / _game.config.board.spacing);
-      var mouseGridY = Math.floor(_eventListeners.mouse.y / _game.config.board.spacing);
+      var mouseGridX = Math.floor(_mouse.mouse.x / _game.config.board.spacing);
+      var mouseGridY = Math.floor(_mouse.mouse.y / _game.config.board.spacing);
       var thisBlockX = Math.floor(this.x / _game.config.board.spacing);
       var thisBlockY = Math.floor(this.y / _game.config.board.spacing);
       var colorOfBlock = _game.config.colors.list[this.whatBlockWas]; // Helper functions
@@ -1186,15 +1035,15 @@ function () {
       };
 
       var moveBlockToMousePosition = function moveBlockToMousePosition() {
-        _this.x = Math.floor(_eventListeners.mouse.x / _game.config.board.spacing) * _game.config.board.spacing;
-        _this.y = Math.floor(_eventListeners.mouse.y / _game.config.board.spacing) * _game.config.board.spacing;
+        _this.x = Math.floor(_mouse.mouse.x / _game.config.board.spacing) * _game.config.board.spacing;
+        _this.y = Math.floor(_mouse.mouse.y / _game.config.board.spacing) * _game.config.board.spacing;
       }; // Methods
       // Level 1
       // Skip mouseIsInHomeRange tests if you want to drag the block anywhere, e.g. during level editing.
 
 
       var mouseIsInHomeRange = function mouseIsInHomeRange() {
-        return _eventListeners.mouse.x < _this.homeX + _game.config.board.spacing * 2 && _eventListeners.mouse.x > _this.homeX - _game.config.board.spacing && _eventListeners.mouse.y < _this.homeY + _game.config.board.spacing * 2 && _eventListeners.mouse.y > _this.homeY - _game.config.board.spacing && _eventListeners.mouse.x < _game.canvas.width && _eventListeners.mouse.x >= 0 && _eventListeners.mouse.y < _game.canvas.height && _eventListeners.mouse.y >= 0;
+        return _mouse.mouse.x < _this.homeX + _game.config.board.spacing * 2 && _mouse.mouse.x > _this.homeX - _game.config.board.spacing && _mouse.mouse.y < _this.homeY + _game.config.board.spacing * 2 && _mouse.mouse.y > _this.homeY - _game.config.board.spacing && _mouse.mouse.x < _game.canvas.width && _mouse.mouse.x >= 0 && _mouse.mouse.y < _game.canvas.height && _mouse.mouse.y >= 0;
       };
 
       var mouseIsOverlappingBlock = function mouseIsOverlappingBlock() {
@@ -1206,15 +1055,15 @@ function () {
       };
 
       var hasStoppedDragging = function hasStoppedDragging() {
-        return _this.dragging && !_eventListeners.mousedown;
+        return _this.dragging && !_mouse.mousedown;
       };
 
       var hasStoppedDraggingBlock = function hasStoppedDraggingBlock() {
-        return _this.draggingBlock && !_eventListeners.mousedown;
+        return _this.draggingBlock && !_mouse.mousedown;
       };
 
       var isDraggingBlock = function isDraggingBlock() {
-        return _this.draggingBlock && _eventListeners.mousedown;
+        return _this.draggingBlock && _mouse.mousedown;
       };
 
       var mouseOverlappingEmptySquare = function mouseOverlappingEmptySquare() {
@@ -1259,11 +1108,11 @@ function () {
 
 
       var hasStartedDraggingBlock = function hasStartedDraggingBlock() {
-        return !_this.draggingBlock && _eventListeners.mousedown && mouseIsOverlappingBlock();
+        return !_this.draggingBlock && _mouse.mousedown && mouseIsOverlappingBlock();
       };
 
       var hasStartedDraggingNothing = function hasStartedDraggingNothing() {
-        return !_this.dragging && _eventListeners.mousedown && !mouseIsOverlappingBlock();
+        return !_this.dragging && _mouse.mousedown && !mouseIsOverlappingBlock();
       };
 
       var isDraggingBlockOverHopper = function isDraggingBlockOverHopper() {
@@ -1344,7 +1193,7 @@ function () {
 }();
 
 exports.default = Selector;
-},{"../game.js":"game/game.js","../eventListeners.js":"game/eventListeners.js"}],"game/classes/Dragger.js":[function(require,module,exports) {
+},{"../game.js":"game/game.js","../eventListeners/mouse.js":"game/eventListeners/mouse.js"}],"game/classes/Dragger.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1354,7 +1203,7 @@ exports.default = void 0;
 
 var _game = require("../game.js");
 
-var _eventListeners = require("../eventListeners.js");
+var _mouse = require("../eventListeners/mouse.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1382,8 +1231,8 @@ function () {
     value: function update() {
       var _this = this;
 
-      var mouseGridX = Math.floor(_eventListeners.mouse.x / _game.config.board.spacing);
-      var mouseGridY = Math.floor(_eventListeners.mouse.y / _game.config.board.spacing);
+      var mouseGridX = Math.floor(_mouse.mouse.x / _game.config.board.spacing);
+      var mouseGridY = Math.floor(_mouse.mouse.y / _game.config.board.spacing);
       var thisBlockX = Math.floor(this.x / _game.config.board.spacing);
       var thisBlockY = Math.floor(this.y / _game.config.board.spacing);
       var colorOfBlock = _game.config.colors.list[this.whatBlockWas]; // Helper functions
@@ -1407,15 +1256,15 @@ function () {
       };
 
       var moveBlockToMousePosition = function moveBlockToMousePosition() {
-        _this.x = Math.floor(_eventListeners.mouse.x / _game.config.board.spacing) * _game.config.board.spacing;
-        _this.y = Math.floor(_eventListeners.mouse.y / _game.config.board.spacing) * _game.config.board.spacing;
+        _this.x = Math.floor(_mouse.mouse.x / _game.config.board.spacing) * _game.config.board.spacing;
+        _this.y = Math.floor(_mouse.mouse.y / _game.config.board.spacing) * _game.config.board.spacing;
       }; // Methods
       // Level 1
       // Skip mouseIsOnBoard tests if you want to drag the block anywhere, e.g. during level editing.
 
 
       var mouseIsOnBoard = function mouseIsOnBoard() {
-        return _eventListeners.mouse.x < _game.canvas.width && _eventListeners.mouse.x >= 0 && _eventListeners.mouse.y < _game.canvas.height && _eventListeners.mouse.y >= 0;
+        return _mouse.mouse.x < _game.canvas.width && _mouse.mouse.x >= 0 && _mouse.mouse.y < _game.canvas.height && _mouse.mouse.y >= 0;
       };
 
       var mouseIsOverlappingBlock = function mouseIsOverlappingBlock() {
@@ -1427,15 +1276,15 @@ function () {
       };
 
       var hasStoppedDragging = function hasStoppedDragging() {
-        return _this.dragging && !_eventListeners.mousedown;
+        return _this.dragging && !_mouse.mousedown;
       };
 
       var hasStoppedDraggingBlock = function hasStoppedDraggingBlock() {
-        return _this.draggingBlock && !_eventListeners.mousedown;
+        return _this.draggingBlock && !_mouse.mousedown;
       };
 
       var isDraggingBlock = function isDraggingBlock() {
-        return _this.draggingBlock && _eventListeners.mousedown;
+        return _this.draggingBlock && _mouse.mousedown;
       };
 
       var mouseOverlappingEmptySquare = function mouseOverlappingEmptySquare() {
@@ -1480,11 +1329,11 @@ function () {
 
 
       var hasStartedDraggingBlock = function hasStartedDraggingBlock() {
-        return !_this.draggingBlock && _eventListeners.mousedown && mouseIsOverlappingBlock();
+        return !_this.draggingBlock && _mouse.mousedown && mouseIsOverlappingBlock();
       };
 
       var hasStartedDraggingNothing = function hasStartedDraggingNothing() {
-        return !_this.dragging && _eventListeners.mousedown && !mouseIsOverlappingBlock();
+        return !_this.dragging && _mouse.mousedown && !mouseIsOverlappingBlock();
       };
 
       var isDraggingBlockOverHopper = function isDraggingBlockOverHopper() {
@@ -1561,7 +1410,7 @@ function () {
 }();
 
 exports.default = Dragger;
-},{"../game.js":"game/game.js","../eventListeners.js":"game/eventListeners.js"}],"game/classes/Painter.js":[function(require,module,exports) {
+},{"../game.js":"game/game.js","../eventListeners/mouse.js":"game/eventListeners/mouse.js"}],"game/classes/Painter.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1571,13 +1420,7 @@ exports.default = void 0;
 
 var _game = require("../game.js");
 
-var _eventListeners = require("../eventListeners.js");
-
-var functions = _interopRequireWildcard(require("../functions.js"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _mouse = require("../eventListeners/mouse.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1604,16 +1447,16 @@ function () {
       var _this = this;
 
       var colorOfBlock = _game.config.colors.list[this.blockType];
-      var mouseGridX = Math.floor(_eventListeners.mouse.x / _game.config.board.spacing);
-      var mouseGridY = Math.floor(_eventListeners.mouse.y / _game.config.board.spacing);
+      var mouseGridX = Math.floor(_mouse.mouse.x / _game.config.board.spacing);
+      var mouseGridY = Math.floor(_mouse.mouse.y / _game.config.board.spacing);
 
       var moveBlockToMousePosition = function moveBlockToMousePosition() {
-        _this.x = Math.floor(_eventListeners.mouse.x / _game.config.board.spacing) * _game.config.board.spacing;
-        _this.y = Math.floor(_eventListeners.mouse.y / _game.config.board.spacing) * _game.config.board.spacing;
+        _this.x = Math.floor(_mouse.mouse.x / _game.config.board.spacing) * _game.config.board.spacing;
+        _this.y = Math.floor(_mouse.mouse.y / _game.config.board.spacing) * _game.config.board.spacing;
       };
 
       var mouseIsOnBoard = function mouseIsOnBoard() {
-        return _eventListeners.mouse.x < _game.canvas.width && _eventListeners.mouse.x >= 0 && _eventListeners.mouse.y < _game.canvas.height && _eventListeners.mouse.y >= 0;
+        return _mouse.mouse.x < _game.canvas.width && _mouse.mouse.x >= 0 && _mouse.mouse.y < _game.canvas.height && _mouse.mouse.y >= 0;
       };
 
       var mouseOverlappingHopper = function mouseOverlappingHopper() {
@@ -1629,15 +1472,15 @@ function () {
       };
 
       var hasStartedPainting = function hasStartedPainting() {
-        return !_this.dragging && _eventListeners.mousedown && mouseIsOnBoard();
+        return !_this.dragging && _mouse.mousedown && mouseIsOnBoard();
       };
 
       var isPainting = function isPainting() {
-        return _this.dragging && _eventListeners.mousedown;
+        return _this.dragging && _mouse.mousedown;
       };
 
       var hasStoppedPainting = function hasStoppedPainting() {
-        return _this.dragging && !_eventListeners.mousedown;
+        return _this.dragging && !_mouse.mousedown;
       };
 
       if (hasStartedPainting()) {
@@ -1685,13 +1528,7 @@ function () {
 
       _game.c.fillRect(this.x, this.y, _game.config.board.spacing, _game.config.board.spacing);
 
-      _game.c.stroke(); // 		if (this.blockType == "5") {
-      // 	// console.log(this.x, this.y)
-      // 	functions.drawLeftArrow(this.x, this.y);
-      // } else if (this.blockType == "6") {
-      // 	functions.drawRightArrow(this.x, this.y);
-      // }
-
+      _game.c.stroke();
 
       _game.c.closePath();
 
@@ -1703,14 +1540,240 @@ function () {
 }();
 
 exports.default = Painter;
-},{"../game.js":"game/game.js","../eventListeners.js":"game/eventListeners.js","../functions.js":"game/functions.js"}],"game/game.js":[function(require,module,exports) {
+},{"../game.js":"game/game.js","../eventListeners/mouse.js":"game/eventListeners/mouse.js"}],"game/eventListeners/keyboard.js":[function(require,module,exports) {
+"use strict";
+
+var _game = require("../game.js");
+
+var _domElements = require("../domElements.js");
+
+var functions = _interopRequireWildcard(require("../functions.js"));
+
+var hopperFunctions = _interopRequireWildcard(require("../functions/hopper.js"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+var notTyping = function notTyping() {
+  return !(_domElements.input_newLevelName === document.activeElement);
+};
+
+window.addEventListener("keyup", function (e) {
+  if ((e.key == "p" || e.key == "P") && notTyping()) {
+    _game.level.paused = !_game.level.paused;
+    document.getElementById("paused").classList.toggle("hidden");
+  }
+});
+window.addEventListener("keyup", function (e) {
+  if ((e.key == "r" || e.key == "R") && _game.config.mode == "play") {
+    if (_game.level.new) {
+      hopperFunctions.resetHoppers();
+      functions.setHomeAddresses();
+      functions.activatePlayMode();
+    } else (0, _game.init)();
+  }
+});
+window.addEventListener("keyup", function (e) {
+  if ((e.key == "s" || e.key == "S") && _game.config.mode == "editor" && notTyping()) {
+    functions.setHomeAddresses();
+    hopperFunctions.spawnSingleHopper();
+    _game.level.new = true;
+  }
+});
+window.addEventListener("keyup", function (e) {
+  if ((e.key == "k" || e.key == "K") && _game.config.mode == "editor" && notTyping()) {
+    hopperFunctions.killAHopper();
+    _game.level.new = true;
+  }
+});
+window.addEventListener("keydown", function (e) {
+  if (e.key == "Shift") {
+    _domElements.tileIcons.forEach(function (icon) {
+      return icon.classList.remove("selected");
+    });
+
+    _game.editor.mode = "drag";
+  }
+});
+window.addEventListener("keyup", function (e) {
+  if (e.key == "Shift") {
+    _game.editor.mode = "none";
+  }
+});
+},{"../game.js":"game/game.js","../domElements.js":"game/domElements.js","../functions.js":"game/functions.js","../functions/hopper.js":"game/functions/hopper.js"}],"game/functions/domFunctions.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.showLevelHasBeenEdited = showLevelHasBeenEdited;
+exports.showSaveJSONPanel = showSaveJSONPanel;
+exports.showLoader = showLoader;
+exports.showPlayingPanel = showPlayingPanel;
+exports.showEditorPanel = showEditorPanel;
+exports.hideFilePanel = hideFilePanel;
+
+var dom = _interopRequireWildcard(require("../domElements.js"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function showLevelHasBeenEdited() {
+  if (dom.info_edited.classList.contains("hidden")) {
+    dom.info_edited.classList.remove("hidden");
+  }
+}
+
+function showSaveJSONPanel() {
+  if (dom.panel_saveBoard.classList.contains("hidden")) {
+    dom.panel_saveBoard.classList.remove("hidden");
+  }
+
+  if (!dom.panel_loadBoard.classList.contains("hidden")) {
+    dom.panel_loadBoard.classList.add("hidden");
+  }
+}
+
+function showLoader() {
+  if (dom.panel_loadBoard.classList.contains("hidden")) {
+    dom.panel_loadBoard.classList.remove("hidden");
+  }
+
+  if (!dom.panel_saveBoard.classList.contains("hidden")) {
+    dom.panel_saveBoard.classList.add("hidden");
+  }
+}
+
+function showPlayingPanel() {
+  if (!dom.panel_editor.classList.contains("hidden")) {
+    dom.panel_editor.classList.add("hidden");
+    dom.panel_lowerEdit.classList.add("hidden");
+    dom.panel_playing.classList.remove("hidden");
+  }
+}
+
+function showEditorPanel() {
+  if (dom.panel_editor.classList.contains("hidden")) {
+    dom.panel_editor.classList.remove("hidden");
+    dom.panel_lowerEdit.classList.remove("hidden");
+    dom.panel_playing.classList.add("hidden");
+  }
+}
+
+function hideFilePanel() {
+  if (!dom.panel_saveBoard.classList.contains("hidden")) {
+    dom.panel_saveBoard.classList.add("hidden");
+  }
+
+  if (!dom.panel_loadBoard.classList.contains("hidden")) {
+    dom.panel_loadBoard.classList.add("hidden");
+  }
+}
+},{"../domElements.js":"game/domElements.js"}],"game/eventListeners/domListeners.js":[function(require,module,exports) {
+"use strict";
+
+var dom = _interopRequireWildcard(require("../domElements.js"));
+
+var functions = _interopRequireWildcard(require("../functions.js"));
+
+var domFunctions = _interopRequireWildcard(require("../functions/domFunctions.js"));
+
+var _game = require("../game.js");
+
+var _levels = _interopRequireDefault(require("../data/levels.json"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+dom.btn_playLevel.addEventListener("click", function () {
+  if (_game.config.mode == "editor") functions.setHomeAddresses();
+  domFunctions.hideFilePanel();
+  domFunctions.showPlayingPanel();
+  functions.activatePlayMode();
+});
+dom.btn_levelEditor.addEventListener("click", function () {
+  domFunctions.hideFilePanel();
+  domFunctions.showEditorPanel();
+  functions.activateLevelEditor();
+});
+dom.btn_backToUnedited.addEventListener("click", _game.init);
+dom.btn_save.addEventListener("click", function () {
+  domFunctions.showSaveJSONPanel();
+  dom.panel_saveBoard.innerHTML = "<h4>Save this string somewhere:</h4><div class='json'>" + JSON.stringify(functions.generateLevelJSON()) + "</div>";
+});
+dom.btn_showLoader.addEventListener("click", domFunctions.showLoader);
+dom.btn_load.addEventListener("click", function () {
+  var levelInfo = JSON.parse(dom.input_levelToLoad.value);
+  (0, _game.init)(levelInfo);
+  domFunctions.hideFilePanel();
+  domFunctions.showPlayingPanel();
+  functions.activatePlayMode();
+});
+dom.btn_new.addEventListener("click", function () {
+  functions.clearBoard();
+  domFunctions.hideFilePanel();
+  domFunctions.showLevelHasBeenEdited();
+});
+dom.input_newLevelName.addEventListener("click", domFunctions.hideFilePanel);
+dom.input_newHoppersToSave.addEventListener("click", domFunctions.hideFilePanel);
+dom.input_newLevelName.addEventListener("input", function (e) {
+  dom.info_levelName.innerHTML = dom.input_newLevelName.value;
+  domFunctions.hideFilePanel();
+});
+dom.input_newHoppersToSave.addEventListener("input", function (e) {
+  var newMax = dom.input_newHoppersToSave.value;
+
+  if (newMax <= 0) {
+    _game.level.hoppers.max = 1;
+    dom.info_toSave.innerHTML = 1;
+  } else {
+    _game.level.hoppers.max = newMax;
+    dom.info_toSave.innerHTML = _game.level.hoppers.max;
+  }
+
+  _game.level.new = true;
+  domFunctions.hideFilePanel();
+  domFunctions.showLevelHasBeenEdited();
+});
+dom.tileIcons.forEach(function (icon) {
+  icon.addEventListener("click", function () {
+    _game.editor.mode = "paint";
+    _game.painter.x = 99999;
+    _game.painter.y = 99999;
+    _game.painter.dragging = false;
+    _game.painter.blockType = icon.dataset.blockType;
+
+    if (!icon.classList.contains("selected")) {
+      dom.tileIcons.forEach(function (icon) {
+        return icon.classList.remove("selected");
+      });
+      icon.classList.add("selected");
+    }
+
+    domFunctions.hideFilePanel();
+  });
+});
+},{"../domElements.js":"game/domElements.js","../functions.js":"game/functions.js","../functions/domFunctions.js":"game/functions/domFunctions.js","../game.js":"game/game.js","../data/levels.json":"game/data/levels.json"}],"game/game.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.init = init;
-exports.frame = exports.info_edited = exports.info_toSave = exports.info_levelName = exports.painter = exports.dragger = exports.selector = exports.hoppers = exports.gameBoard = exports.spawnPoints = exports.homeAddresses = exports.c = exports.canvas = exports.editor = exports.config = exports.level = exports.palettes = void 0;
+exports.frame = exports.painter = exports.dragger = exports.selector = exports.hoppers = exports.gameBoard = exports.spawnPoints = exports.homeAddresses = exports.c = exports.canvas = exports.editor = exports.config = exports.level = exports.palettes = void 0;
+
+var functions = _interopRequireWildcard(require("./functions.js"));
+
+var canvasFunctions = _interopRequireWildcard(require("./functions/canvas.js"));
+
+var hopperFunctions = _interopRequireWildcard(require("./functions/hopper.js"));
+
+var dom = _interopRequireWildcard(require("./domElements.js"));
 
 var _Hopper = _interopRequireDefault(require("./classes/Hopper.js"));
 
@@ -1720,17 +1783,19 @@ var _Dragger = _interopRequireDefault(require("./classes/Dragger.js"));
 
 var _Painter = _interopRequireDefault(require("./classes/Painter.js"));
 
-var _eventListeners = require("./eventListeners");
+var _mouse = _interopRequireDefault(require("./eventListeners/mouse.js"));
 
-var _levels = _interopRequireDefault(require("./levels.json"));
+var _keyboard = _interopRequireDefault(require("./eventListeners/keyboard.js"));
 
-var functions = _interopRequireWildcard(require("./functions.js"));
+var _domListeners = _interopRequireDefault(require("./eventListeners/domListeners.js"));
+
+var _levels = _interopRequireDefault(require("./data/levels.json"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var palettes = ["#ff71ce", "#01cdfe", "#05ffa1", "#bfb9ff", "#fffb96"];
 exports.palettes = palettes;
@@ -1755,7 +1820,8 @@ var config = {
   },
   hopper: {
     color: "green",
-    radius: 9
+    radius: 9,
+    limit: 16
   },
   mode: "play",
   physics: {
@@ -1800,35 +1866,31 @@ var dragger = new _Dragger.default();
 exports.dragger = dragger;
 var painter = new _Painter.default();
 exports.painter = painter;
-var info_levelName = document.getElementById("level-name");
-exports.info_levelName = info_levelName;
-var info_toSave = document.getElementById("to-save");
-exports.info_toSave = info_toSave;
-var info_edited = document.getElementById("edited");
-exports.info_edited = info_edited;
 
 function init() {
+  var newLevel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _levels.default[level.current];
   level.new = false;
+  config.mode = "play";
   level.hoppers.current = 0;
   level.hoppers.free = 0;
 
-  if (_levels.default[level.current].hoppers.max > 0) {
-    level.hoppers.max = _levels.default[level.current].hoppers.max;
+  if (newLevel.hoppers.max > 0) {
+    level.hoppers.max = newLevel.hoppers.max;
   } else {
     level.hoppers.max = 1;
   }
 
-  info_levelName.innerHTML = _levels.default[level.current].name;
-  info_toSave.innerHTML = level.hoppers.max;
+  dom.info_levelName.innerHTML = newLevel.name;
+  dom.info_toSave.innerHTML = level.hoppers.max;
 
-  if (!info_edited.classList.contains("hidden")) {
-    info_edited.classList.add("hidden");
+  if (!dom.info_edited.classList.contains("hidden")) {
+    dom.info_edited.classList.add("hidden");
   }
 
   exports.hoppers = hoppers = [];
   exports.spawnPoints = spawnPoints = [];
   exports.gameBoard = gameBoard = [];
-  functions.createGameBoardCopy(_levels.default[level.current].map);
+  functions.createGameBoardCopy(newLevel.map);
   functions.setHomeAddresses();
   exports.frame = frame = -1;
   config.colors.movable = palettes[level.current % palettes.length];
@@ -1840,30 +1902,35 @@ exports.frame = frame;
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
-  c.fillStyle = "black";
-  c.fillRect(0, 0, canvas.width, canvas.height);
-  c.fill();
-  functions.drawGameBoard();
-  functions.spawnHoppers();
+  canvasFunctions.clearScreen();
+  canvasFunctions.drawGameBoard();
+  hopperFunctions.spawnHoppers();
 
   if (config.mode == "editor") {
     switch (editor.mode) {
       case "paint":
-        // console.log("Painting?")
         painter.update();
         break;
 
       case "drag":
-        // console.log("Dragging?")
         dragger.update();
         break;
     }
   } else {
     selector.update();
-  } // Update and draw hoppers
+  }
 
+  if (!level.paused) {
+    updateHoppers();
+    exports.frame = frame = frame + 1;
+  } else {
+    hoppers.forEach(function (hopper) {
+      return hopper.draw();
+    });
+  }
 
   function updateHoppers() {
+    var allHoppersRescued = level.hoppers.free == level.hoppers.max && config.mode == "play" && !level.new;
     var numberOfHoppers = hoppers.length;
     var freedHoppers = [];
 
@@ -1882,18 +1949,9 @@ function gameLoop() {
       });
     }
 
-    if (level.hoppers.free == level.hoppers.max && config.mode == "play" && !level.new) {
+    if (allHoppersRescued) {
       functions.loadNextLevel();
     }
-  }
-
-  if (!level.paused) {
-    updateHoppers();
-    exports.frame = frame = frame + 1;
-  } else {
-    hoppers.forEach(function (hopper) {
-      return hopper.draw();
-    });
   }
 } // Cheats
 
@@ -1905,7 +1963,7 @@ window.addEventListener("keyup", function (e) {
 });
 init();
 gameLoop();
-},{"./classes/Hopper.js":"game/classes/Hopper.js","./classes/Selector.js":"game/classes/Selector.js","./classes/Dragger.js":"game/classes/Dragger.js","./classes/Painter.js":"game/classes/Painter.js","./eventListeners":"game/eventListeners.js","./levels.json":"game/levels.json","./functions.js":"game/functions.js"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./functions.js":"game/functions.js","./functions/canvas.js":"game/functions/canvas.js","./functions/hopper.js":"game/functions/hopper.js","./domElements.js":"game/domElements.js","./classes/Hopper.js":"game/classes/Hopper.js","./classes/Selector.js":"game/classes/Selector.js","./classes/Dragger.js":"game/classes/Dragger.js","./classes/Painter.js":"game/classes/Painter.js","./eventListeners/mouse.js":"game/eventListeners/mouse.js","./eventListeners/keyboard.js":"game/eventListeners/keyboard.js","./eventListeners/domListeners.js":"game/eventListeners/domListeners.js","./data/levels.json":"game/data/levels.json"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1933,7 +1991,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51441" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49219" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

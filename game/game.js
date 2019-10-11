@@ -1,10 +1,15 @@
+import * as functions from "./functions.js";
+import * as canvasFunctions from "./functions/canvas.js";
+import * as hopperFunctions from "./functions/hopper.js";
+import * as dom from "./domElements.js";
 import Hopper from "./classes/Hopper.js";
 import Selector from "./classes/Selector.js";
 import Dragger from "./classes/Dragger.js";
 import Painter from "./classes/Painter.js";
-import { debugPanel } from "./eventListeners";
-import levels from "./levels.json";
-import * as functions from "./functions.js";
+import mouseEventListeners from "./eventListeners/mouse.js";
+import keyEventListeners from "./eventListeners/keyboard.js";
+import domEventListeners from "./eventListeners/domListeners.js";
+import levels from "./data/levels.json";
 
 export const palettes = ["#ff71ce", "#01cdfe", "#05ffa1", "#bfb9ff", "#fffb96"];
 
@@ -30,7 +35,8 @@ export const config = {
 
 	hopper: {
 		color: "green",
-		radius: 9
+		radius: 9,
+		limit: 16
 	},
 
 	mode: "play",
@@ -79,27 +85,24 @@ export let selector = new Selector();
 export const dragger = new Dragger();
 export const painter = new Painter();
 
-export let info_levelName = document.getElementById("level-name");
-export let info_toSave = document.getElementById("to-save")
-export let info_edited = document.getElementById("edited");
-
-export function init() {
+export function init(newLevel = levels[level.current]) {
 	level.new = false;
+	config.mode = "play";
 	level.hoppers.current = 0;
 	level.hoppers.free = 0;
-	if (levels[level.current].hoppers.max > 0) {
-		level.hoppers.max = levels[level.current].hoppers.max;	
+	if (newLevel.hoppers.max > 0) {
+		level.hoppers.max = newLevel.hoppers.max;	
 	} else {
 		level.hoppers.max = 1
 	}
 	
-	info_levelName.innerHTML = levels[level.current].name;
-	info_toSave.innerHTML = level.hoppers.max;
-	if (!info_edited.classList.contains("hidden")) {info_edited.classList.add("hidden");}
+	dom.info_levelName.innerHTML = newLevel.name;
+	dom.info_toSave.innerHTML = level.hoppers.max;
+	if (!dom.info_edited.classList.contains("hidden")) {dom.info_edited.classList.add("hidden");}
 	hoppers = [];
 	spawnPoints = [];
 	gameBoard = [];
-	functions.createGameBoardCopy(levels[level.current].map)
+	functions.createGameBoardCopy(newLevel.map)
 	functions.setHomeAddresses();
 	frame = -1;
 	config.colors.movable = palettes[level.current % palettes.length]
@@ -110,21 +113,16 @@ export let frame = 0;
 function gameLoop() {
 	requestAnimationFrame(gameLoop);
 
-	c.fillStyle = "black";
-	c.fillRect(0, 0, canvas.width, canvas.height);
-	c.fill();
-
-	functions.drawGameBoard();
-	functions.spawnHoppers();
+	canvasFunctions.clearScreen();
+	canvasFunctions.drawGameBoard();
+	hopperFunctions.spawnHoppers();
 
 	if (config.mode == "editor") {
 		switch (editor.mode) {
 			case "paint":
-				// console.log("Painting?")
 				painter.update();
 				break;
 			case "drag":
-				// console.log("Dragging?")
 				dragger.update();
 				break;
 		}
@@ -132,16 +130,25 @@ function gameLoop() {
 		selector.update();
 	}
 
-	// Update and draw hoppers
+	if (!level.paused) {
+		updateHoppers();
+		frame += 1;
+	} else {
+		hoppers.forEach(hopper => hopper.draw())
+	}
+	
 	function updateHoppers() {
+		let allHoppersRescued = level.hoppers.free == level.hoppers.max && config.mode == "play" && !level.new;
 		let numberOfHoppers = hoppers.length;
 		let freedHoppers = [];
+
 		for (let i = numberOfHoppers - 1; i >= 0; i--) {
 			hoppers[i].update();
 			if (hoppers[i].free) {
 				freedHoppers.push(i);
 			}
 		}
+
 		if (freedHoppers.length > 0) {
 			freedHoppers.forEach(hopper => {
 				hoppers.splice(hopper, 1);
@@ -149,16 +156,9 @@ function gameLoop() {
 			});
 		}
 
-		if (level.hoppers.free == level.hoppers.max && config.mode == "play" && !level.new) {
+		if (allHoppersRescued) {
 			functions.loadNextLevel();
 		}
-	}
-
-	if (!level.paused) {
-		updateHoppers();
-		frame += 1;
-	} else {
-		hoppers.forEach(hopper => hopper.draw())
 	}
 }
 

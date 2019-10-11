@@ -3,26 +3,9 @@ import { c } from "../game.js";
 import { canvas } from "../game.js";
 import { gameBoard } from "../game.js";
 import { homeAddresses } from "../game.js";
-import { mouse } from "../eventListeners.js";
-import { mousedown } from "../eventListeners.js";
+import { mouse } from "../eventListeners/mouse.js";
+import { mousedown } from "../eventListeners/mouse.js";
 import { hoppers } from "../game.js";
-
-// During init() we log all movable blocks and create an array of objects that stores the block's home address
-// and current address. Initially home and current are the same.
-// When user first drags a block, its home address is stored in this selector object.
-// Then when user drags the block to another location, we search the 'addresses' array
-// for an object that matches the home address stored in this selector.
-// Its new location is then stored in 'current'.
-// The implication of this is that when the user goes to drag the block again, we loop through this process
-// Only this time, the current address is different to the home address.
-// The home address is referenced when dragging the block around, so that we can't pull the block
-// more than one square away in any direction.
-// Doing things this way means we don't have to have an object for every block, which
-// gives primacy to the level map.
-// This makes life easier when it comes to being able to edit levels etc.
-// We also don't have to loop through a list of block objects every frame, because collisions are handled by
-// the hopper object which only checks for collisions within one square of itself,
-// and the loops in this object are only called when we drag a block.
 
 export default class Selector {
 	constructor() {

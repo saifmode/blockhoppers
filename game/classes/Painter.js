@@ -3,12 +3,11 @@ import { c } from "../game.js";
 import { canvas } from "../game.js";
 import { gameBoard } from "../game.js";
 import { homeAddresses } from "../game.js";
-import { mouse } from "../eventListeners.js";
-import { mousedown } from "../eventListeners.js";
+import { mouse } from "../eventListeners/mouse.js";
+import { mousedown } from "../eventListeners/mouse.js";
 import { hoppers } from "../game.js";
 import { level } from "../game.js";
 import { info_edited } from "../game.js";
-import * as functions from "../functions.js";
 
 export default class Painter {
 	constructor() {
@@ -101,12 +100,6 @@ export default class Painter {
 		c.rect(this.x, this.y, config.board.spacing, config.board.spacing);
 		c.fillRect(this.x, this.y, config.board.spacing, config.board.spacing);
 		c.stroke();
-		// 		if (this.blockType == "5") {
-		// 	// console.log(this.x, this.y)
-		// 	functions.drawLeftArrow(this.x, this.y);
-		// } else if (this.blockType == "6") {
-		// 	functions.drawRightArrow(this.x, this.y);
-		// }
 		c.closePath();
 		c.restore();
 
