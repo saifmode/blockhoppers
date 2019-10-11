@@ -1,0 +1,14 @@
+TODO:
+
+Refactor code:
+Make it easier to add new blocks by creating a JSON? maybe, that then filters through into the level editor HTML, the Hoppers object and the drawGameBoard function (and any others that need it)
+
+Game ideas:
+Moveable arrow blocks
+Bad hopper
+
+UI:
+Generally improve UI, maybe use Vue
+
+End game:
+Make it so ppl can save and share levels, social aspects
