@@ -2,8 +2,9 @@ import { config } from "../game.js";
 import { c } from "../game.js";
 import { canvas } from "../game.js";
 import { gameBoard } from "../game.js";
+import { hoppers } from "../game.js"
 
-export default class Hopper {
+export default class BadHopper {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
@@ -22,7 +23,7 @@ export default class Hopper {
 		this.dy = config.physics.speed;
 		this.terminal = config.terminal;
 
-		this.bad = false;
+		this.killedHopper = false;
 	}
 
 	update() {
@@ -155,6 +156,16 @@ export default class Hopper {
 
 		// COLLISIONS
 
+		// Test if collided with good hopper
+		hoppers.forEach(hopper => {
+			if (this.right > hopper.left && this.right < hopper.right && this.y == hopper.y) {
+				this.killedHopper = true;
+			} else if (this.left < hopper.right && this.left > hopper.left && this.y == hopper.y) {
+				this.killedHopper = true;
+			}
+		})
+
+
 		// Test if hopper has reached exit
 		if (reachedExit()) {
 			this.free = true;
@@ -276,7 +287,7 @@ export default class Hopper {
 	draw() {
 		c.save();
 		c.beginPath();
-		c.fillStyle = config.hopper.color;
+		c.fillStyle = config.hopper.badColor;
 		c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
 		c.fill();
 		c.closePath();

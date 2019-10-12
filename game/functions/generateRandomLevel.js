@@ -9,6 +9,9 @@ export default function generateRandomLevel() {
 	newLevel.name = "Random";
 	newLevel.hoppers.max = (Math.floor(Math.random() * 5) + 1).toString();
 	newLevel.hoppers.releaseRate = 100;
+	newLevel.badHoppers = {}
+	newLevel.badHoppers.max = 0;
+	newLevel.badHoppers.releaseRate = 100;
 	newLevel.map = [];
 
 	for (let y = 0; y < config.board.size; y++) {

@@ -30,6 +30,9 @@ export function drawGameBoard() {
 					drawBlock(x, y, config.colors.immovable);
 					drawRightArrow(x, y);
 					break;
+				case "7":
+					drawBlock(x, y, config.colors.badSpawn);
+					break;
 			}
 
 			if (config.mode == "editor") drawGrid(x, y);

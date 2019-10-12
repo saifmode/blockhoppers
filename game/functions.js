@@ -7,11 +7,13 @@ import { painter } from "./game.js";
 import { editor } from "./game.js";
 import { homeAddresses } from "./game.js";
 import { spawnPoints } from "./game.js";
+import { badSpawnPoints } from "./game.js";
 import { level } from "./game.js";
 import { config } from "./game.js";
 import { gameBoard } from "./game.js";
 import { frame } from "./game.js";
 import { hoppers } from "./game.js";
+import { badHoppers } from "./game.js";
 import { init } from "./game.js";
 import Hopper from "./classes/Hopper.js";
 import levels from "./data/levels.json";
@@ -77,12 +79,12 @@ export function setHomeAddresses() {
 				});
 			} else if (gameBoard[y][x] == "3") {
 				spawnPoints.push({ x, y });
+			} else if (gameBoard[y][x] == "7") {
+				badSpawnPoints.push({ x, y });
 			}
 		}
 	}
 }
-
-
 
 export function clearBoard() {
 	for (let y = 0; y < config.board.size; y++) {
@@ -91,10 +93,10 @@ export function clearBoard() {
 		}
 	}
 	hoppers.splice(0, hoppers.length);
+	badHoppers.splice(0, badHoppers.length);
 	level.hoppers.max = 1;
 	level.new = true;
 }
-
 
 export function loadNextLevel() {
 	level.new = false;
@@ -112,8 +114,17 @@ export function generateLevelJSON() {
 	if (newMax <= 0) {
 		newMax = 1;
 	} else {
-		level.hoppers.max = newMax
+		level.hoppers.max = newMax;
 	}
+
+	let badSpawnPoints = 0;
+	gameBoard.forEach(row => {
+		row.forEach(square => {
+			if (square == "7") {
+				badSpawnPoints += 1;
+			}
+		});
+	});
 
 	return {
 		name: dom.input_newLevelName.value,
@@ -121,20 +132,29 @@ export function generateLevelJSON() {
 			max: newMax,
 			releaseRate: 100
 		},
+		badHoppers: {
+			max: badSpawnPoints,
+			releaseRate: 100
+		},
 		map: gameBoard
 	};
 }
 
 export function addToCompletedList() {
-	let highestLevel = JSON.parse(window.localStorage.getItem("completedLevels"));
+	let highestLevel = JSON.parse(
+		window.localStorage.getItem("completedLevels")
+	);
 	if (highestLevel > completedLevels) return;
 
-	window.localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
-
-	console.log(completedLevels)
+	window.localStorage.setItem(
+		"completedLevels",
+		JSON.stringify(completedLevels)
+	);
 
 	let newLevelOptionNode = document.createElement("option");
-	let whichLevel = document.createTextNode("Level " + completedLevels.toString());
+	let whichLevel = document.createTextNode(
+		"Level " + completedLevels.toString()
+	);
 	newLevelOptionNode.appendChild(whichLevel);
 	newLevelOptionNode.value = completedLevels;
 	dom.select_level.appendChild(newLevelOptionNode);

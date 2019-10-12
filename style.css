@@ -150,6 +150,10 @@ body {
 	
 }
 
+.tile-icon#bad-spawn-point {
+	background-color: red;
+}
+
 .tile-icon.selected {
 	border: 2px solid #eee;
 }

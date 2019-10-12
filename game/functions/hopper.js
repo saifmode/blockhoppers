@@ -2,10 +2,13 @@ import * as dom from "../domElements.js"
 
 import { config } from "../game.js";
 import { hoppers } from "../game.js";
+import { badHoppers } from "../game.js";
 import { level } from "../game.js";
 import { frame } from "../game.js";
 import { spawnPoints } from "../game.js";
+import { badSpawnPoints } from "../game.js";
 import Hopper from "../classes/Hopper.js";
+import BadHopper from "../classes/BadHopper.js"
 
 export function killAHopper() {
 	if (hoppers.length > 0) {
@@ -36,8 +39,6 @@ export function spawnSingleHopper() {
 	}
 
 	level.hoppers.current = hoppers.length;
-	// level.hoppers.max = hoppers.length;
-	// dom.info_toSave.innerHTML = level.hoppers.max;
 }
 
 export function spawnHoppers() {
@@ -52,8 +53,45 @@ export function spawnHoppers() {
 	}
 }
 
+export function spawnSingleBadHopper() {
+	if (!badSpawnPoints.length) {
+		badSpawnPoints.push({x: 64, y: 0})
+	} 
+
+	let currentBadSpawnPoint = level.badHoppers.current % badSpawnPoints.length;
+	let halfWayAcrossSpawnPoint =
+		badSpawnPoints[currentBadSpawnPoint].x * config.board.spacing +
+		config.board.spacing / 2;
+	let topOfSpawnPoint =
+		badSpawnPoints[currentBadSpawnPoint].y * config.board.spacing;
+
+	if (badHoppers.length < config.badHopper.limit) {
+		try {
+			badHoppers.push(new BadHopper(halfWayAcrossSpawnPoint, topOfSpawnPoint));
+		} catch {
+			badHoppers.push(new BadHopper(config.board.spacing / 2, 0));
+		}
+	}
+
+	level.badHoppers.current = badHoppers.length;
+}
+
+export function spawnBadHoppers() {
+	let timeToSpawnHopper = () =>
+		frame == 0 || frame % level.hoppers.releaseRate == 0;
+	let notEnoughHoppers =
+		level.badHoppers.max > level.badHoppers.current &&
+		badHoppers.length < config.badHopper.limit;
+
+	if (notEnoughHoppers && timeToSpawnHopper()) {
+		spawnSingleBadHopper();
+	}
+}
+
 export function resetHoppers() {
 	level.hoppers.current = 0;
+	level.badHoppers.current = 0;
 	level.hoppers.free = 0;
 	hoppers.splice(0, hoppers.length);
+	badHoppers.splice(0, badHoppers.length)
 }

@@ -5,6 +5,7 @@ import * as domFunctions from "./functions/domFunctions.js";
 import * as dom from "./domElements.js";
 import generateRandomLevel from "./functions/generateRandomLevel.js"
 import Hopper from "./classes/Hopper.js";
+import BadHopper from "./classes/BadHopper.js";
 import Selector from "./classes/Selector.js";
 import Dragger from "./classes/Dragger.js";
 import Painter from "./classes/Painter.js";
@@ -26,6 +27,11 @@ export const level = {
 		max: 1,
 		free: 0
 	},
+	badHoppers: {
+		releaseRate: 100,
+		current: 0,
+		max: 1,
+	},
 	completed: false,
 	paused: false,
 	new: false
@@ -39,7 +45,12 @@ export const config = {
 
 	hopper: {
 		color: "green",
+		badColor: "red",
 		radius: 9,
+		limit: 16
+	},
+
+	badHopper: {
 		limit: 16
 	},
 
@@ -59,7 +70,8 @@ export const config = {
 		exit: "white",
 		spawn: "blue",
 		leftArrow: "green",
-		rightArrow: "green"
+		rightArrow: "green",
+		badSpawn: "red",
 	}
 };
 
@@ -71,7 +83,8 @@ config.colors.list = [
 	config.colors.spawn,
 	config.colors.exit,
 	config.colors.leftArrow,
-	config.colors.rightArrow
+	config.colors.rightArrow,
+	config.colors.badSpawn
 ];
 
 export const editor = {
@@ -83,22 +96,33 @@ canvas.width = config.board.size * config.board.spacing;
 canvas.height = config.board.size * config.board.spacing;
 
 export let homeAddresses = [];
+export let badSpawnPoints = [];
 export let spawnPoints = [];
 export let gameBoard = [];
 export let hoppers = [];
+export let badHoppers = [];
 export let selector = new Selector();
 export const dragger = new Dragger();
 export const painter = new Painter();
+
+// export let badHopper = new BadHopper(200, 200);
 
 export function init(newLevel = levels[level.current]) {
 	level.new = false;
 	level.hoppers.current = 0;
 	level.hoppers.free = 0;
+	level.badHoppers.current = 0;
 	if (newLevel.hoppers.max > 0) {
 		level.hoppers.max = newLevel.hoppers.max;
 	} else {
 		level.hoppers.max = 1;
 	}
+	if (newLevel.badHoppers.max > 0) {
+		level.badHoppers.max = newLevel.badHoppers.max;
+	} else {
+		level.badHoppers.max = 0
+	}
+
 
 	dom.info_levelName.innerHTML = newLevel.name;
 	dom.info_toSave.innerHTML = level.hoppers.max;
@@ -107,7 +131,9 @@ export function init(newLevel = levels[level.current]) {
 		dom.info_edited.classList.add("hidden");
 	}
 	hoppers = [];
+	badHoppers = [];
 	spawnPoints = [];
+	badSpawnPoints = [];
 	gameBoard = [];
 	functions.createGameBoardCopy(newLevel.map);
 	functions.setHomeAddresses();
@@ -130,6 +156,7 @@ function gameLoop() {
 	canvasFunctions.clearScreen();
 	canvasFunctions.drawGameBoard();
 	hopperFunctions.spawnHoppers();
+	hopperFunctions.spawnBadHoppers();
 
 	if (config.mode == "editor") {
 		switch (editor.mode) {
@@ -190,6 +217,18 @@ function gameLoop() {
 		}
 		dom.select_level.selectedIndex = level.current;
 	}
+
+	badHoppers.forEach(baddie => {
+		baddie.update();
+		if (baddie.killedHopper) { // reset code, probably put this somewhere
+			if (level.new || config.random) {
+			hopperFunctions.resetHoppers();
+			functions.setHomeAddresses();
+			resetFrames();
+			baddie.killedHopper = false
+		} else {console.log("optherwise");init();}
+		}
+	})
 }
 
 // Cheats

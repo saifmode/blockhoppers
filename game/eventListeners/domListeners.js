@@ -25,6 +25,18 @@ dom.btn_playLevel.addEventListener("click", () => {
 	domFunctions.showPlayingPanel();
 	functions.activatePlayMode();
 	if (!config.random) domFunctions.showLevelSelect();
+
+	let badSpawnPoints = 0;
+	gameBoard.forEach(row => {
+		row.forEach(square => {
+			if (square == "7") {
+				badSpawnPoints += 1;
+			}
+		});
+	});
+	if (badSpawnPoints > 0) {
+		level.badHoppers.max = badSpawnPoints;
+	}
 	// dom.btn_randomLevels.innerText = "Random levels"
 });
 
@@ -89,6 +101,7 @@ dom.btn_load.addEventListener("click", () => {
 	domFunctions.showPlayingPanel();
 	domFunctions.togglePlayAndEditorButtons();
 	functions.activatePlayMode();
+	level.new = true;
 });
 
 // LEVEL EDITOR INPUTS
