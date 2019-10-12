@@ -16,6 +16,10 @@ export function killAHopper() {
 }
 
 export function spawnSingleHopper() {
+	if (!spawnPoints.length) {
+		spawnPoints.push({x: 64, y: 0})
+	} 
+
 	let currentSpawnPoint = level.hoppers.current % spawnPoints.length;
 	let halfWayAcrossSpawnPoint =
 		spawnPoints[currentSpawnPoint].x * config.board.spacing +
@@ -31,10 +35,9 @@ export function spawnSingleHopper() {
 		}
 	}
 
-	console.log(hoppers.length);
 	level.hoppers.current = hoppers.length;
-	level.hoppers.max = hoppers.length;
-	dom.info_toSave.innerHTML = level.hoppers.max;
+	// level.hoppers.max = hoppers.length;
+	// dom.info_toSave.innerHTML = level.hoppers.max;
 }
 
 export function spawnHoppers() {

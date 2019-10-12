@@ -17,6 +17,7 @@ import Hopper from "./classes/Hopper.js";
 import levels from "./data/levels.json";
 import { palettes } from "./game.js";
 import { selector } from "./game.js";
+import { completedLevels } from "./game.js";
 
 export function activatePlayMode() {
 	if (hoppers.length < 1) {
@@ -122,4 +123,20 @@ export function generateLevelJSON() {
 		},
 		map: gameBoard
 	};
+}
+
+export function addToCompletedList() {
+	let highestLevel = JSON.parse(window.localStorage.getItem("completedLevels"));
+	if (highestLevel > completedLevels) return;
+
+	window.localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+
+	console.log(completedLevels)
+
+	let newLevelOptionNode = document.createElement("option");
+	let whichLevel = document.createTextNode("Level " + completedLevels.toString());
+	newLevelOptionNode.appendChild(whichLevel);
+	newLevelOptionNode.value = completedLevels;
+	dom.select_level.appendChild(newLevelOptionNode);
+	dom.select_level.selectedIndex = completedLevels;
 }

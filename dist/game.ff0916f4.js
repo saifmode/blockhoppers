@@ -123,7 +123,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.class_editPanels = exports.panel_loadBoard = exports.panel_saveBoard = exports.panel_playing = exports.panel_lowerEdit = exports.panel_editor = exports.panel_debug = exports.input_newHoppersToSave = exports.input_newLevelName = exports.input_levelToLoad = exports.info_toSave = exports.info_levelName = exports.info_edited = exports.btn_save = exports.btn_new = exports.btn_load = exports.btn_showLoader = exports.btn_playLevel = exports.btn_levelEditor = exports.btn_backToUnedited = exports.tileIcons = void 0;
+exports.class_editPanels = exports.panel_levelSelect = exports.panel_loadBoard = exports.panel_saveBoard = exports.panel_playing = exports.panel_lowerEdit = exports.panel_editor = exports.panel_debug = exports.select_level = exports.input_newHoppersToSave = exports.input_newLevelName = exports.input_levelToLoad = exports.info_toSave = exports.info_levelName = exports.info_edited = exports.btn_save = exports.btn_new = exports.btn_load = exports.btn_showLoader = exports.btn_backToQuest = exports.btn_randomLevels = exports.btn_playLevel = exports.btn_levelEditor = exports.btn_backToUnedited = exports.tileIcons = void 0;
 var tileIcons = document.querySelectorAll(".tile-icon");
 exports.tileIcons = tileIcons;
 var btn_backToUnedited = document.getElementById("back-to-unedited");
@@ -132,6 +132,10 @@ var btn_levelEditor = document.getElementById("level-editor");
 exports.btn_levelEditor = btn_levelEditor;
 var btn_playLevel = document.getElementById("play-level");
 exports.btn_playLevel = btn_playLevel;
+var btn_randomLevels = document.getElementById("random-levels");
+exports.btn_randomLevels = btn_randomLevels;
+var btn_backToQuest = document.getElementById("back-to-quest");
+exports.btn_backToQuest = btn_backToQuest;
 var btn_showLoader = document.getElementById("launch-loader");
 exports.btn_showLoader = btn_showLoader;
 var btn_load = document.getElementById("load");
@@ -152,6 +156,8 @@ var input_newLevelName = document.getElementById("new-level-name");
 exports.input_newLevelName = input_newLevelName;
 var input_newHoppersToSave = document.getElementById("new-hoppers-to-save");
 exports.input_newHoppersToSave = input_newHoppersToSave;
+var select_level = document.getElementById("level-selector");
+exports.select_level = select_level;
 var panel_debug = document.getElementById("debug-panel");
 exports.panel_debug = panel_debug;
 var panel_editor = document.getElementById("editor-panel");
@@ -164,6 +170,8 @@ var panel_saveBoard = document.getElementById("panel-save-board");
 exports.panel_saveBoard = panel_saveBoard;
 var panel_loadBoard = document.getElementById("panel-load-board");
 exports.panel_loadBoard = panel_loadBoard;
+var panel_levelSelect = document.getElementById("panel-level-select");
+exports.panel_levelSelect = panel_levelSelect;
 var class_editPanels = document.querySelectorAll(".edit-panel");
 exports.class_editPanels = class_editPanels;
 },{}],"game/classes/Hopper.js":[function(require,module,exports) {
@@ -319,11 +327,11 @@ function () {
       };
 
       var wrappedThroughFloorAndHitCeiling = function wrappedThroughFloorAndHitCeiling() {
-        return _this.bottom + _this.dy > _game.canvas.height && (_game.gameBoard[0][gridX] != "0" || _game.gameBoard[0][gridX] != "3") && !_this.onCeiling;
+        return _this.bottom + _this.dy > _game.canvas.height && (_game.gameBoard[0][gridX] != "0" || _game.gameBoard[0][gridX] != "3" || _game.gameBoard[0][gridX] != "4") && !_this.onCeiling;
       };
 
       var fellThroughCeiling = function fellThroughCeiling() {
-        return _this.onCeiling && (_game.gameBoard[0][gridX] == "0" || _game.gameBoard[0][gridX] == "3") && (_this.left + 1 > gridX * _game.config.board.spacing && _this.direction == "right" || _this.right - 1 < (gridX + 1) * _game.config.board.spacing && _this.direction == "left");
+        return _this.onCeiling && (_game.gameBoard[0][gridX] == "0" || _game.gameBoard[0][gridX] == "3" || _game.gameBoard[0][gridX] == "4") && (_this.left + 1 > gridX * _game.config.board.spacing && _this.direction == "right" || _this.right - 1 < (gridX + 1) * _game.config.board.spacing && _this.direction == "left");
       }; // COLLISIONS
       // Test if hopper has reached exit
 
@@ -521,14 +529,8 @@ module.exports = [{
     "releaseRate": 100
   },
   "map": [["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "3", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "2", "0", "0", "0", "0", "0", "4", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "1", "1", "1", "5", "1", "1", "1", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]]
-}, {
-  "name": "Easy as pie",
-  "hoppers": {
-    "max": "",
-    "releaseRate": 100
-  },
-  "map": [["0", "0", "0", "0", "0", "6", "0", "3", "0", "5", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "2", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "4", "0", "1", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "1", "0", "5", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "2", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]]
-}, {
+}, // {"name":"Easy as pie","hoppers":{"max":"","releaseRate":100},"map":[["0","0","0","0","0","6","0","3","0","5","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","2","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","4","0","1","0","0","0","0","0","0","0"],["0","0","0","0","0","0","1","0","5","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","2","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"],["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"]]},
+{
   "name": "X Marx the Spot",
   "hoppers": {
     "max": "",
@@ -578,7 +580,14 @@ module.exports = [{
     "max": "1",
     "releaseRate": 100
   },
-  "map": [["3", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "0"], ["0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"], ["0", "1", "0", "1", "5", "1", "5", "1", "5", "1", "5", "1", "5", "0", "1", "0"], ["0", "1", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "6", "1", "6", "1", "6", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "1", "0", "0", "0", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "1", "0", "4", "1", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "1", "5", "1", "5", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "6", "1", "6", "1", "6", "1", "6", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"], ["0", "1", "5", "1", "5", "1", "5", "1", "5", "1", "5", "1", "5", "0", "1", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"], ["0", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]]
+  "map": [["3", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "0"], ["0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"], ["0", "1", "0", "1", "5", "1", "5", "1", "5", "1", "5", "1", "5", "0", "1", "0"], ["0", "1", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "6", "1", "6", "1", "6", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "1", "0", "0", "0", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "1", "0", "4", "1", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "1", "5", "1", "5", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "6", "1", "6", "1", "6", "1", "6", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"], ["0", "1", "5", "1", "5", "1", "5", "1", "5", "1", "5", "1", "5", "0", "1", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"], ["6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]]
+}, {
+  "name": "Minecraft",
+  "hoppers": {
+    "max": 1,
+    "releaseRate": 100
+  },
+  "map": [["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "3", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "2", "0", "6", "2", "2", "0", "0", "0", "0", "0", "0"], ["0", "1", "1", "0", "2", "0", "0", "1", "1", "0", "2", "0", "0", "0", "0", "0"], ["0", "0", "0", "2", "2", "0", "1", "0", "0", "2", "1", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "2", "0", "1", "0", "1", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "1", "1", "0", "0", "2", "2", "2", "1", "0", "0"], ["0", "0", "0", "0", "0", "1", "1", "1", "0", "2", "1", "1", "0", "0", "2", "0"], ["0", "1", "1", "1", "1", "0", "0", "2", "0", "1", "0", "0", "1", "0", "0", "0"], ["2", "0", "0", "1", "1", "2", "0", "0", "1", "2", "0", "0", "1", "0", "0", "2"], ["1", "0", "0", "1", "0", "2", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0"], ["0", "1", "0", "0", "1", "2", "0", "0", "0", "1", "0", "0", "1", "1", "1", "1"], ["1", "1", "0", "1", "2", "1", "1", "2", "0", "1", "0", "0", "1", "2", "1", "2"], ["1", "0", "0", "2", "2", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "2", "2", "1", "0", "0", "2", "1"], ["0", "0", "2", "0", "4", "0", "1", "0", "0", "2", "0", "0", "0", "0", "2", "0"]]
 }, {
   "name": "More levels coming soon!",
   "hoppers": {
@@ -600,6 +609,7 @@ exports.setHomeAddresses = setHomeAddresses;
 exports.clearBoard = clearBoard;
 exports.loadNextLevel = loadNextLevel;
 exports.generateLevelJSON = generateLevelJSON;
+exports.addToCompletedList = addToCompletedList;
 
 var dom = _interopRequireWildcard(require("./domElements"));
 
@@ -725,6 +735,19 @@ function generateLevelJSON() {
     },
     map: _game.gameBoard
   };
+}
+
+function addToCompletedList() {
+  var highestLevel = JSON.parse(window.localStorage.getItem("completedLevels"));
+  if (highestLevel > _game.completedLevels) return;
+  window.localStorage.setItem("completedLevels", JSON.stringify(_game.completedLevels));
+  console.log(_game.completedLevels);
+  var newLevelOptionNode = document.createElement("option");
+  var whichLevel = document.createTextNode("Level " + _game.completedLevels.toString());
+  newLevelOptionNode.appendChild(whichLevel);
+  newLevelOptionNode.value = _game.completedLevels;
+  dom.select_level.appendChild(newLevelOptionNode);
+  dom.select_level.selectedIndex = _game.completedLevels;
 }
 },{"./domElements":"game/domElements.js","./game.js":"game/game.js","./classes/Hopper.js":"game/classes/Hopper.js","./data/levels.json":"game/data/levels.json"}],"game/functions/canvas.js":[function(require,module,exports) {
 "use strict";
@@ -895,6 +918,13 @@ function killAHopper() {
 }
 
 function spawnSingleHopper() {
+  if (!_game.spawnPoints.length) {
+    _game.spawnPoints.push({
+      x: 64,
+      y: 0
+    });
+  }
+
   var currentSpawnPoint = _game.level.hoppers.current % _game.spawnPoints.length;
   var halfWayAcrossSpawnPoint = _game.spawnPoints[currentSpawnPoint].x * _game.config.board.spacing + _game.config.board.spacing / 2;
   var topOfSpawnPoint = _game.spawnPoints[currentSpawnPoint].y * _game.config.board.spacing;
@@ -907,10 +937,8 @@ function spawnSingleHopper() {
     }
   }
 
-  console.log(_game.hoppers.length);
-  _game.level.hoppers.current = _game.hoppers.length;
-  _game.level.hoppers.max = _game.hoppers.length;
-  dom.info_toSave.innerHTML = _game.level.hoppers.max;
+  _game.level.hoppers.current = _game.hoppers.length; // level.hoppers.max = hoppers.length;
+  // dom.info_toSave.innerHTML = level.hoppers.max;
 }
 
 function spawnHoppers() {
@@ -931,7 +959,198 @@ function resetHoppers() {
 
   _game.hoppers.splice(0, _game.hoppers.length);
 }
-},{"../domElements.js":"game/domElements.js","../game.js":"game/game.js","../classes/Hopper.js":"game/classes/Hopper.js"}],"game/eventListeners/mouse.js":[function(require,module,exports) {
+},{"../domElements.js":"game/domElements.js","../game.js":"game/game.js","../classes/Hopper.js":"game/classes/Hopper.js"}],"game/functions/domFunctions.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.showLevelHasBeenEdited = showLevelHasBeenEdited;
+exports.showSaveJSONPanel = showSaveJSONPanel;
+exports.showLoader = showLoader;
+exports.showPlayingPanel = showPlayingPanel;
+exports.showEditorPanel = showEditorPanel;
+exports.hideFilePanel = hideFilePanel;
+exports.togglePlayAndEditorButtons = togglePlayAndEditorButtons;
+exports.showBackToQuestButton = showBackToQuestButton;
+exports.hideBackToQuestButton = hideBackToQuestButton;
+exports.showLevelSelect = showLevelSelect;
+exports.hideLevelSelect = hideLevelSelect;
+exports.populateLevelSelector = populateLevelSelector;
+
+var dom = _interopRequireWildcard(require("../domElements.js"));
+
+var _game = require("../game.js");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function showLevelHasBeenEdited() {
+  if (dom.info_edited.classList.contains("hidden")) {
+    dom.info_edited.classList.remove("hidden");
+  }
+}
+
+function showSaveJSONPanel() {
+  if (dom.panel_saveBoard.classList.contains("hidden")) {
+    dom.panel_saveBoard.classList.remove("hidden");
+  }
+
+  if (!dom.panel_loadBoard.classList.contains("hidden")) {
+    dom.panel_loadBoard.classList.add("hidden");
+  }
+}
+
+function showLoader() {
+  if (dom.panel_loadBoard.classList.contains("hidden")) {
+    dom.panel_loadBoard.classList.remove("hidden");
+  }
+
+  if (!dom.panel_saveBoard.classList.contains("hidden")) {
+    dom.panel_saveBoard.classList.add("hidden");
+  }
+}
+
+function showPlayingPanel() {
+  if (!dom.panel_editor.classList.contains("hidden")) {
+    dom.panel_editor.classList.add("hidden");
+    dom.panel_lowerEdit.classList.add("hidden");
+    dom.panel_playing.classList.remove("hidden");
+  }
+}
+
+function showEditorPanel() {
+  if (dom.panel_editor.classList.contains("hidden")) {
+    dom.panel_editor.classList.remove("hidden");
+    dom.panel_lowerEdit.classList.remove("hidden");
+    dom.panel_playing.classList.add("hidden");
+  }
+}
+
+function hideFilePanel() {
+  if (!dom.panel_saveBoard.classList.contains("hidden")) {
+    dom.panel_saveBoard.classList.add("hidden");
+  }
+
+  if (!dom.panel_loadBoard.classList.contains("hidden")) {
+    dom.panel_loadBoard.classList.add("hidden");
+  }
+}
+
+function togglePlayAndEditorButtons() {
+  dom.btn_playLevel.classList.toggle("hidden");
+  dom.btn_levelEditor.classList.toggle("hidden");
+}
+
+function showBackToQuestButton() {
+  if (dom.btn_backToQuest.classList.contains("hidden")) dom.btn_backToQuest.classList.remove("hidden");
+}
+
+function hideBackToQuestButton() {
+  if (!dom.btn_backToQuest.classList.contains("hidden")) dom.btn_backToQuest.classList.add("hidden");
+}
+
+function showLevelSelect() {
+  if (dom.panel_levelSelect.classList.contains("hidden")) dom.panel_levelSelect.classList.remove("hidden");
+}
+
+function hideLevelSelect() {
+  if (!dom.panel_levelSelect.classList.contains("hidden")) dom.panel_levelSelect.classList.add("hidden");
+}
+
+function populateLevelSelector() {
+  if (!window.localStorage.getItem("completedLevels")) {
+    window.localStorage.setItem("completedLevels", "0");
+  } else {
+    (0, _game.setCompletedLevels)(JSON.parse(window.localStorage.getItem("completedLevels")));
+  } // console.log(completedLevels)
+
+
+  for (var i = 0; i < _game.completedLevels + 1; i++) {
+    // console.log(i)
+    var newLevelOptionNode = document.createElement("option");
+    var whichLevel = document.createTextNode("Level " + i.toString());
+    newLevelOptionNode.appendChild(whichLevel);
+    newLevelOptionNode.value = i;
+    dom.select_level.appendChild(newLevelOptionNode);
+    dom.select_level.selectedIndex = 0;
+  }
+}
+},{"../domElements.js":"game/domElements.js","../game.js":"game/game.js"}],"game/functions/generateRandomLevel.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = generateRandomLevel;
+
+var _game = require("../game.js");
+
+function generateRandomLevel() {
+  var maxDensity = 0.4;
+  var chanceImmovable = Math.max(0.66, Math.random());
+  var density = Math.max(maxDensity, Math.random());
+  var newLevel = {};
+  newLevel.hoppers = {};
+  newLevel.name = "Random";
+  newLevel.hoppers.max = (Math.floor(Math.random() * 5) + 1).toString();
+  newLevel.hoppers.releaseRate = 100;
+  newLevel.map = [];
+
+  for (var y = 0; y < _game.config.board.size; y++) {
+    var row = [];
+
+    for (var x = 0; x < _game.config.board.size; x++) {
+      if (Math.random() > density && y > 1) {
+        if (Math.random() > chanceImmovable) {
+          row.push("2");
+        } else {
+          row.push("1");
+        }
+      } else {
+        row.push("0");
+      }
+    }
+
+    newLevel.map.push(row);
+  }
+
+  function shuffle(array) {
+    var counter = array.length;
+
+    while (counter > 0) {
+      var index = Math.floor(Math.random() * counter);
+      counter--;
+      var temp = array[counter];
+      array[counter] = array[index];
+      array[index] = temp;
+    }
+
+    return array;
+  }
+
+  var topRow = [];
+
+  for (var i = 0; i < _game.config.board.size; i++) {
+    topRow.push(i);
+  }
+
+  topRow = shuffle(topRow);
+  console.log();
+
+  for (var _i = 0; _i < newLevel.hoppers.max; _i++) {
+    if (_i == 0 || Math.random() > 0.6) {
+      newLevel.map[0][topRow[_i]] = "3";
+    }
+  }
+
+  var randX = Math.floor(Math.random() * _game.config.board.size);
+  var randY = Math.floor(Math.random() * _game.config.board.size);
+  newLevel.map[randX][randY] = "4";
+  return newLevel;
+}
+},{"../game.js":"game/game.js"}],"game/eventListeners/mouse.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1038,7 +1257,6 @@ function () {
         _this.x = Math.floor(_mouse.mouse.x / _game.config.board.spacing) * _game.config.board.spacing;
         _this.y = Math.floor(_mouse.mouse.y / _game.config.board.spacing) * _game.config.board.spacing;
       }; // Methods
-      // Level 1
       // Skip mouseIsInHomeRange tests if you want to drag the block anywhere, e.g. during level editing.
 
 
@@ -1099,13 +1317,12 @@ function () {
           try {
             var hopperGridX = Math.floor(hopper.x / _game.config.board.spacing);
             var hopperGridY = Math.floor(hopper.y / _game.config.board.spacing);
-            return thisBlockX == hopperGridX && thisBlockY == hopperGridY; // chjange to new if bugs occur
+            return thisBlockX == hopperGridX && thisBlockY == hopperGridY;
           } catch (_unused5) {
             return false;
           }
         });
-      }; // Level2
-
+      };
 
       var hasStartedDraggingBlock = function hasStartedDraggingBlock() {
         return !_this.draggingBlock && _mouse.mousedown && mouseIsOverlappingBlock();
@@ -1205,6 +1422,12 @@ var _game = require("../game.js");
 
 var _mouse = require("../eventListeners/mouse.js");
 
+var dom = _interopRequireWildcard(require("../domElements.js"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1250,8 +1473,8 @@ function () {
         _this.draggingBlock = false;
         _game.level.new = true;
 
-        if (_game.info_edited.classList.contains("hidden")) {
-          _game.info_edited.classList.remove("hidden");
+        if (dom.info_edited.classList.contains("hidden")) {
+          dom.info_edited.classList.remove("hidden");
         }
       };
 
@@ -1410,7 +1633,7 @@ function () {
 }();
 
 exports.default = Dragger;
-},{"../game.js":"game/game.js","../eventListeners/mouse.js":"game/eventListeners/mouse.js"}],"game/classes/Painter.js":[function(require,module,exports) {
+},{"../game.js":"game/game.js","../eventListeners/mouse.js":"game/eventListeners/mouse.js","../domElements.js":"game/domElements.js"}],"game/classes/Painter.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1421,6 +1644,12 @@ exports.default = void 0;
 var _game = require("../game.js");
 
 var _mouse = require("../eventListeners/mouse.js");
+
+var dom = _interopRequireWildcard(require("../domElements.js"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1496,8 +1725,8 @@ function () {
           _game.gameBoard[mouseGridY][mouseGridX] = this.blockType;
           _game.level.new = true;
 
-          if (_game.info_edited.classList.contains("hidden")) {
-            _game.info_edited.classList.remove("hidden");
+          if (dom.info_edited.classList.contains("hidden")) {
+            dom.info_edited.classList.remove("hidden");
           }
         }
       } else if (mouseOverlappingHopper()) {
@@ -1540,7 +1769,7 @@ function () {
 }();
 
 exports.default = Painter;
-},{"../game.js":"game/game.js","../eventListeners/mouse.js":"game/eventListeners/mouse.js"}],"game/eventListeners/keyboard.js":[function(require,module,exports) {
+},{"../game.js":"game/game.js","../eventListeners/mouse.js":"game/eventListeners/mouse.js","../domElements.js":"game/domElements.js"}],"game/eventListeners/keyboard.js":[function(require,module,exports) {
 "use strict";
 
 var _game = require("../game.js");
@@ -1548,6 +1777,8 @@ var _game = require("../game.js");
 var _domElements = require("../domElements.js");
 
 var functions = _interopRequireWildcard(require("../functions.js"));
+
+var domFunctions = _interopRequireWildcard(require("../functions/domFunctions.js"));
 
 var hopperFunctions = _interopRequireWildcard(require("../functions/hopper.js"));
 
@@ -1567,22 +1798,24 @@ window.addEventListener("keyup", function (e) {
 });
 window.addEventListener("keyup", function (e) {
   if ((e.key == "r" || e.key == "R") && _game.config.mode == "play") {
-    if (_game.level.new) {
+    if (_game.level.new || _game.config.random) {
       hopperFunctions.resetHoppers();
       functions.setHomeAddresses();
-      functions.activatePlayMode();
+      (0, _game.resetFrames)(); // functions.activatePlayMode();
     } else (0, _game.init)();
   }
 });
 window.addEventListener("keyup", function (e) {
   if ((e.key == "s" || e.key == "S") && _game.config.mode == "editor" && notTyping()) {
     functions.setHomeAddresses();
+    domFunctions.showLevelHasBeenEdited();
     hopperFunctions.spawnSingleHopper();
     _game.level.new = true;
   }
 });
 window.addEventListener("keyup", function (e) {
   if ((e.key == "k" || e.key == "K") && _game.config.mode == "editor" && notTyping()) {
+    domFunctions.showLevelHasBeenEdited();
     hopperFunctions.killAHopper();
     _game.level.new = true;
   }
@@ -1601,77 +1834,7 @@ window.addEventListener("keyup", function (e) {
     _game.editor.mode = "none";
   }
 });
-},{"../game.js":"game/game.js","../domElements.js":"game/domElements.js","../functions.js":"game/functions.js","../functions/hopper.js":"game/functions/hopper.js"}],"game/functions/domFunctions.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.showLevelHasBeenEdited = showLevelHasBeenEdited;
-exports.showSaveJSONPanel = showSaveJSONPanel;
-exports.showLoader = showLoader;
-exports.showPlayingPanel = showPlayingPanel;
-exports.showEditorPanel = showEditorPanel;
-exports.hideFilePanel = hideFilePanel;
-
-var dom = _interopRequireWildcard(require("../domElements.js"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function showLevelHasBeenEdited() {
-  if (dom.info_edited.classList.contains("hidden")) {
-    dom.info_edited.classList.remove("hidden");
-  }
-}
-
-function showSaveJSONPanel() {
-  if (dom.panel_saveBoard.classList.contains("hidden")) {
-    dom.panel_saveBoard.classList.remove("hidden");
-  }
-
-  if (!dom.panel_loadBoard.classList.contains("hidden")) {
-    dom.panel_loadBoard.classList.add("hidden");
-  }
-}
-
-function showLoader() {
-  if (dom.panel_loadBoard.classList.contains("hidden")) {
-    dom.panel_loadBoard.classList.remove("hidden");
-  }
-
-  if (!dom.panel_saveBoard.classList.contains("hidden")) {
-    dom.panel_saveBoard.classList.add("hidden");
-  }
-}
-
-function showPlayingPanel() {
-  if (!dom.panel_editor.classList.contains("hidden")) {
-    dom.panel_editor.classList.add("hidden");
-    dom.panel_lowerEdit.classList.add("hidden");
-    dom.panel_playing.classList.remove("hidden");
-  }
-}
-
-function showEditorPanel() {
-  if (dom.panel_editor.classList.contains("hidden")) {
-    dom.panel_editor.classList.remove("hidden");
-    dom.panel_lowerEdit.classList.remove("hidden");
-    dom.panel_playing.classList.add("hidden");
-  }
-}
-
-function hideFilePanel() {
-  if (!dom.panel_saveBoard.classList.contains("hidden")) {
-    dom.panel_saveBoard.classList.add("hidden");
-  }
-
-  if (!dom.panel_loadBoard.classList.contains("hidden")) {
-    dom.panel_loadBoard.classList.add("hidden");
-  }
-}
-},{"../domElements.js":"game/domElements.js"}],"game/eventListeners/domListeners.js":[function(require,module,exports) {
+},{"../game.js":"game/game.js","../domElements.js":"game/domElements.js","../functions.js":"game/functions.js","../functions/domFunctions.js":"game/functions/domFunctions.js","../functions/hopper.js":"game/functions/hopper.js"}],"game/eventListeners/domListeners.js":[function(require,module,exports) {
 "use strict";
 
 var dom = _interopRequireWildcard(require("../domElements.js"));
@@ -1679,6 +1842,10 @@ var dom = _interopRequireWildcard(require("../domElements.js"));
 var functions = _interopRequireWildcard(require("../functions.js"));
 
 var domFunctions = _interopRequireWildcard(require("../functions/domFunctions.js"));
+
+var hopperFunctions = _interopRequireWildcard(require("../functions/hopper.js"));
+
+var _generateRandomLevel = _interopRequireDefault(require("../functions/generateRandomLevel.js"));
 
 var _game = require("../game.js");
 
@@ -1690,35 +1857,65 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+// GAME MODE BUTTONS
 dom.btn_playLevel.addEventListener("click", function () {
   if (_game.config.mode == "editor") functions.setHomeAddresses();
   domFunctions.hideFilePanel();
+  domFunctions.togglePlayAndEditorButtons();
   domFunctions.showPlayingPanel();
   functions.activatePlayMode();
+  if (!_game.config.random) domFunctions.showLevelSelect(); // dom.btn_randomLevels.innerText = "Random levels"
 });
 dom.btn_levelEditor.addEventListener("click", function () {
   domFunctions.hideFilePanel();
+  domFunctions.togglePlayAndEditorButtons();
   domFunctions.showEditorPanel();
-  functions.activateLevelEditor();
+  domFunctions.hideLevelSelect();
+  functions.activateLevelEditor(); // dom.btn_randomLevels.innerText = "Random levels"
 });
+dom.btn_randomLevels.addEventListener("click", function () {
+  _game.level.new = false;
+  _game.level.current += 1;
+  (0, _game.init)((0, _generateRandomLevel.default)());
+  _game.config.random = true;
+  dom.btn_randomLevels.innerText = "New random level";
+  domFunctions.hideFilePanel();
+  domFunctions.showBackToQuestButton();
+  domFunctions.hideLevelSelect(); // domFunctions.showPlayingPanel();
+  // functions.activatePlayMode();
+});
+dom.btn_backToQuest.addEventListener("click", function () {
+  _game.level.current = 0;
+  _game.config.random = false;
+  _game.level.new = false;
+  domFunctions.hideBackToQuestButton();
+  domFunctions.showPlayingPanel();
+  domFunctions.hideFilePanel();
+  domFunctions.showLevelSelect();
+  functions.activatePlayMode();
+  (0, _game.init)();
+}); // LEVEL EDITOR BUTTONS
+
 dom.btn_backToUnedited.addEventListener("click", _game.init);
 dom.btn_save.addEventListener("click", function () {
   domFunctions.showSaveJSONPanel();
   dom.panel_saveBoard.innerHTML = "<h4>Save this string somewhere:</h4><div class='json'>" + JSON.stringify(functions.generateLevelJSON()) + "</div>";
 });
 dom.btn_showLoader.addEventListener("click", domFunctions.showLoader);
-dom.btn_load.addEventListener("click", function () {
-  var levelInfo = JSON.parse(dom.input_levelToLoad.value);
-  (0, _game.init)(levelInfo);
-  domFunctions.hideFilePanel();
-  domFunctions.showPlayingPanel();
-  functions.activatePlayMode();
-});
 dom.btn_new.addEventListener("click", function () {
   functions.clearBoard();
   domFunctions.hideFilePanel();
   domFunctions.showLevelHasBeenEdited();
 });
+dom.btn_load.addEventListener("click", function () {
+  var levelInfo = JSON.parse(dom.input_levelToLoad.value);
+  (0, _game.init)(levelInfo);
+  domFunctions.hideFilePanel();
+  domFunctions.showPlayingPanel();
+  domFunctions.togglePlayAndEditorButtons();
+  functions.activatePlayMode();
+}); // LEVEL EDITOR INPUTS
+
 dom.input_newLevelName.addEventListener("click", domFunctions.hideFilePanel);
 dom.input_newHoppersToSave.addEventListener("click", domFunctions.hideFilePanel);
 dom.input_newLevelName.addEventListener("input", function (e) {
@@ -1739,7 +1936,8 @@ dom.input_newHoppersToSave.addEventListener("input", function (e) {
   _game.level.new = true;
   domFunctions.hideFilePanel();
   domFunctions.showLevelHasBeenEdited();
-});
+}); // LEVEL EDITOR TILES
+
 dom.tileIcons.forEach(function (icon) {
   icon.addEventListener("click", function () {
     _game.editor.mode = "paint";
@@ -1757,15 +1955,25 @@ dom.tileIcons.forEach(function (icon) {
 
     domFunctions.hideFilePanel();
   });
+}); // LEVEL SELECT
+
+dom.select_level.addEventListener("change", function (e) {
+  _game.level.current = parseInt(e.srcElement.value);
+  hopperFunctions.resetHoppers();
+  functions.setHomeAddresses();
+  (0, _game.resetFrames)();
+  (0, _game.init)();
 });
-},{"../domElements.js":"game/domElements.js","../functions.js":"game/functions.js","../functions/domFunctions.js":"game/functions/domFunctions.js","../game.js":"game/game.js","../data/levels.json":"game/data/levels.json"}],"game/game.js":[function(require,module,exports) {
+},{"../domElements.js":"game/domElements.js","../functions.js":"game/functions.js","../functions/domFunctions.js":"game/functions/domFunctions.js","../functions/hopper.js":"game/functions/hopper.js","../functions/generateRandomLevel.js":"game/functions/generateRandomLevel.js","../game.js":"game/game.js","../data/levels.json":"game/data/levels.json"}],"game/game.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.init = init;
-exports.frame = exports.painter = exports.dragger = exports.selector = exports.hoppers = exports.gameBoard = exports.spawnPoints = exports.homeAddresses = exports.c = exports.canvas = exports.editor = exports.config = exports.level = exports.palettes = void 0;
+exports.resetFrames = resetFrames;
+exports.setCompletedLevels = setCompletedLevels;
+exports.frame = exports.painter = exports.dragger = exports.selector = exports.hoppers = exports.gameBoard = exports.spawnPoints = exports.homeAddresses = exports.c = exports.canvas = exports.editor = exports.config = exports.level = exports.completedLevels = exports.palettes = void 0;
 
 var functions = _interopRequireWildcard(require("./functions.js"));
 
@@ -1773,7 +1981,11 @@ var canvasFunctions = _interopRequireWildcard(require("./functions/canvas.js"));
 
 var hopperFunctions = _interopRequireWildcard(require("./functions/hopper.js"));
 
+var domFunctions = _interopRequireWildcard(require("./functions/domFunctions.js"));
+
 var dom = _interopRequireWildcard(require("./domElements.js"));
+
+var _generateRandomLevel = _interopRequireDefault(require("./functions/generateRandomLevel.js"));
 
 var _Hopper = _interopRequireDefault(require("./classes/Hopper.js"));
 
@@ -1799,6 +2011,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var palettes = ["#ff71ce", "#01cdfe", "#05ffa1", "#bfb9ff", "#fffb96"];
 exports.palettes = palettes;
+var completedLevels = 0;
+exports.completedLevels = completedLevels;
 var level = {
   current: 0,
   name: "",
@@ -1824,6 +2038,7 @@ var config = {
     limit: 16
   },
   mode: "play",
+  random: false,
   physics: {
     gravity: 0.3,
     speed: 1.5,
@@ -1870,7 +2085,6 @@ exports.painter = painter;
 function init() {
   var newLevel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _levels.default[level.current];
   level.new = false;
-  config.mode = "play";
   level.hoppers.current = 0;
   level.hoppers.free = 0;
 
@@ -1899,6 +2113,14 @@ function init() {
 
 var frame = 0;
 exports.frame = frame;
+
+function resetFrames() {
+  exports.frame = frame = -1;
+}
+
+function setCompletedLevels(num) {
+  exports.completedLevels = completedLevels = num;
+}
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
@@ -1930,7 +2152,6 @@ function gameLoop() {
   }
 
   function updateHoppers() {
-    var allHoppersRescued = level.hoppers.free == level.hoppers.max && config.mode == "play" && !level.new;
     var numberOfHoppers = hoppers.length;
     var freedHoppers = [];
 
@@ -1948,22 +2169,44 @@ function gameLoop() {
         level.hoppers.free += 1;
       });
     }
+  }
 
-    if (allHoppersRescued) {
-      functions.loadNextLevel();
+  var allHoppersRescued = level.hoppers.free == level.hoppers.max && (config.mode == "play" || config.random) && !level.new;
+
+  if (allHoppersRescued && config.random || level.hoppers.free > 1 && hoppers.length < 1 && config.random) {
+    level.current += 1;
+    init((0, _generateRandomLevel.default)()); // config.mode = "random";
+
+    domFunctions.hideFilePanel();
+    domFunctions.showPlayingPanel();
+    functions.activatePlayMode();
+  } else if (allHoppersRescued && config.mode == "play") {
+    functions.loadNextLevel();
+
+    if (completedLevels < level.current && !config.random) {
+      exports.completedLevels = completedLevels = level.current;
+      functions.addToCompletedList();
     }
+
+    dom.select_level.selectedIndex = level.current;
   }
 } // Cheats
 
 
 window.addEventListener("keyup", function (e) {
-  if ((e.key == "n" || e.key == "N") && config.mode == "play") {
-    functions.loadNextLevel();
+  if (e.key == "n" || e.key == "N") {
+    if (config.mode == "play" && !config.random) functions.loadNextLevel();else {
+      level.new = false;
+      level.current += 1;
+      init((0, _generateRandomLevel.default)());
+    }
   }
-});
+}); // window.localStorage.removeItem("completedLevels")
+
+domFunctions.populateLevelSelector();
 init();
 gameLoop();
-},{"./functions.js":"game/functions.js","./functions/canvas.js":"game/functions/canvas.js","./functions/hopper.js":"game/functions/hopper.js","./domElements.js":"game/domElements.js","./classes/Hopper.js":"game/classes/Hopper.js","./classes/Selector.js":"game/classes/Selector.js","./classes/Dragger.js":"game/classes/Dragger.js","./classes/Painter.js":"game/classes/Painter.js","./eventListeners/mouse.js":"game/eventListeners/mouse.js","./eventListeners/keyboard.js":"game/eventListeners/keyboard.js","./eventListeners/domListeners.js":"game/eventListeners/domListeners.js","./data/levels.json":"game/data/levels.json"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./functions.js":"game/functions.js","./functions/canvas.js":"game/functions/canvas.js","./functions/hopper.js":"game/functions/hopper.js","./functions/domFunctions.js":"game/functions/domFunctions.js","./domElements.js":"game/domElements.js","./functions/generateRandomLevel.js":"game/functions/generateRandomLevel.js","./classes/Hopper.js":"game/classes/Hopper.js","./classes/Selector.js":"game/classes/Selector.js","./classes/Dragger.js":"game/classes/Dragger.js","./classes/Painter.js":"game/classes/Painter.js","./eventListeners/mouse.js":"game/eventListeners/mouse.js","./eventListeners/keyboard.js":"game/eventListeners/keyboard.js","./eventListeners/domListeners.js":"game/eventListeners/domListeners.js","./data/levels.json":"game/data/levels.json"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1991,7 +2234,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49219" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61062" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

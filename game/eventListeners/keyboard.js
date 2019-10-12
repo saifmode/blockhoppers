@@ -5,8 +5,10 @@ import { hoppers } from "../game.js";
 import { init } from "../game.js";
 import { input_newLevelName } from "../domElements.js";
 import { tileIcons } from "../domElements.js";
+import { resetFrames } from "../game.js"
 
 import * as functions from "../functions.js";
+import * as domFunctions from "../functions/domFunctions.js";
 import * as hopperFunctions from "../functions/hopper.js"
 
 let notTyping = () => !(input_newLevelName === document.activeElement);
@@ -20,10 +22,11 @@ window.addEventListener("keyup", e => {
 
 window.addEventListener("keyup", e => {
 	if ((e.key == "r" || e.key == "R") && config.mode == "play") {
-		if (level.new) {
+		if (level.new || config.random) {
 			hopperFunctions.resetHoppers();
 			functions.setHomeAddresses();
-			functions.activatePlayMode();
+			resetFrames();
+			// functions.activatePlayMode();
 		} else init();
 	}
 });
@@ -35,6 +38,7 @@ window.addEventListener("keyup", e => {
 		notTyping()
 	) {
 		functions.setHomeAddresses();
+		domFunctions.showLevelHasBeenEdited();
 		hopperFunctions.spawnSingleHopper();
 		level.new = true;
 	}
@@ -46,6 +50,7 @@ window.addEventListener("keyup", e => {
 		config.mode == "editor" &&
 		notTyping()
 	) {
+		domFunctions.showLevelHasBeenEdited();
 		hopperFunctions.killAHopper();
 		level.new = true;
 	}

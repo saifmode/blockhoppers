@@ -141,11 +141,11 @@ export default class Hopper {
 			this.bottom + this.dy > canvas.height && gameBoard[0][gridX] == "0";
 		let wrappedThroughFloorAndHitCeiling = () =>
 			this.bottom + this.dy > canvas.height &&
-			(gameBoard[0][gridX] != "0" || gameBoard[0][gridX] != "3") &&
+			(gameBoard[0][gridX] != "0" || gameBoard[0][gridX] != "3" || gameBoard[0][gridX] != "4") &&
 			!this.onCeiling;
 		let fellThroughCeiling = () =>
 			this.onCeiling &&
-			(gameBoard[0][gridX] == "0" || gameBoard[0][gridX] == "3") &&
+			(gameBoard[0][gridX] == "0" || gameBoard[0][gridX] == "3" || gameBoard[0][gridX] == "4") &&
 			((this.left + 1 > gridX * config.board.spacing &&
 				this.direction == "right") ||
 				(this.right - 1 < (gridX + 1) * config.board.spacing &&

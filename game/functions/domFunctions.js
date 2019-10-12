@@ -1,4 +1,6 @@
 import * as dom from "../domElements.js";
+import { setCompletedLevels } from "../game.js";
+import { completedLevels } from "../game.js";
 
 export function showLevelHasBeenEdited() {
 	if (dom.info_edited.classList.contains("hidden")) {
@@ -24,7 +26,6 @@ export function showLoader() {
 	}
 }
 
-
 export function showPlayingPanel() {
 	if (!dom.panel_editor.classList.contains("hidden")) {
 		dom.panel_editor.classList.add("hidden");
@@ -49,3 +50,54 @@ export function hideFilePanel() {
 		dom.panel_loadBoard.classList.add("hidden");
 	}
 }
+
+export function togglePlayAndEditorButtons() {
+	dom.btn_playLevel.classList.toggle("hidden");
+	dom.btn_levelEditor.classList.toggle("hidden");
+}
+
+export function showBackToQuestButton() {
+	if (dom.btn_backToQuest.classList.contains("hidden"))
+		dom.btn_backToQuest.classList.remove("hidden");
+}
+
+export function hideBackToQuestButton() {
+	if (!dom.btn_backToQuest.classList.contains("hidden"))
+		dom.btn_backToQuest.classList.add("hidden");
+}
+
+export function showLevelSelect() {
+	if (dom.panel_levelSelect.classList.contains("hidden"))
+		dom.panel_levelSelect.classList.remove("hidden")		
+}
+
+export function hideLevelSelect() {
+	if (!dom.panel_levelSelect.classList.contains("hidden"))
+		dom.panel_levelSelect.classList.add("hidden")		
+}
+
+
+
+export function populateLevelSelector() {
+	if (!window.localStorage.getItem("completedLevels")) {
+		window.localStorage.setItem("completedLevels", "0");
+	} else {
+		setCompletedLevels(
+			JSON.parse(window.localStorage.getItem("completedLevels"))
+		);
+	}
+
+	// console.log(completedLevels)
+
+	for (let i = 0; i < completedLevels + 1; i++) {
+		// console.log(i)
+		let newLevelOptionNode = document.createElement("option");
+		let whichLevel = document.createTextNode("Level " + i.toString());
+		newLevelOptionNode.appendChild(whichLevel);
+		newLevelOptionNode.value = i;
+		dom.select_level.appendChild(newLevelOptionNode);
+		dom.select_level.selectedIndex = 0;
+	}
+}
+
+

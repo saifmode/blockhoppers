@@ -72,7 +72,7 @@ export default class Selector {
 				config.board.spacing;};
 
 		// Methods
-		// Level 1
+		
 		// Skip mouseIsInHomeRange tests if you want to drag the block anywhere, e.g. during level editing.
 		let mouseIsInHomeRange = () =>
 			mouse.x < this.homeX + config.board.spacing * 2 &&
@@ -131,13 +131,13 @@ export default class Selector {
 					);
 					return (
 						thisBlockX == hopperGridX && thisBlockY == hopperGridY
-					); // chjange to new if bugs occur
+					);
 				} catch {
 					return false;
 				}
 			});
 
-		// Level2
+		
 		let hasStartedDraggingBlock = () =>
 			!this.draggingBlock && mousedown && mouseIsOverlappingBlock();
 		let hasStartedDraggingNothing = () =>

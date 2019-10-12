@@ -7,7 +7,7 @@ import { mouse } from "../eventListeners/mouse.js";
 import { mousedown } from "../eventListeners/mouse.js";
 import { hoppers } from "../game.js";
 import { level } from "../game.js";
-import { info_edited } from "../game.js";
+import * as dom from "../domElements.js";
 
 export default class Painter {
 	constructor() {
@@ -71,8 +71,8 @@ export default class Painter {
 			if (mouseIsOnBoard()) {
 				gameBoard[mouseGridY][mouseGridX] = this.blockType;
 				level.new = true;
-				if (info_edited.classList.contains("hidden")) {
-					info_edited.classList.remove("hidden");
+				if (dom.info_edited.classList.contains("hidden")) {
+					dom.info_edited.classList.remove("hidden");
 				}
 			}
 		} else if (mouseOverlappingHopper()) {

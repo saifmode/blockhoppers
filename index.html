@@ -95,7 +95,7 @@
 				<!-- LEVEL INFO -->
 
 				<ul>
-					<li><b>Level name</b>: <span id="level-name"></span> <span id="edited" class="hidden">(Edited)</span></li>
+					<li><b>Level name</b>: <span id="level-name"></span> <span id="edited" class="hidden warning">(Edited)</span></li>
 					<li><b>Hoppers to rescue</b>: <span id="to-save"></span></li>
 				</ul>
 
@@ -105,11 +105,16 @@
 
 
 				<div class="row">
-					<button id="play-level" class="level-button">
+					<button id="play-level" class="level-button hidden">
 						Play level
 					</button>
 					<button id="level-editor" class="level-button">
 						Level editor
+					</button>
+					<button id="random-levels" class="level-button">
+						Random Levels
+					</button>
+					<button id="back-to-quest" class="level-button hidden">Back to quest</button>
 				</div>
 
 				<!-- PLAYING MODE PANEL -->
@@ -122,6 +127,13 @@
 						<li><b>R</b> - Reset level</li>
 						<li><b>P</b> - Pause</li>
 					</ul>
+				</div>
+
+				<div id="panel-level-select">
+					<h4>Level select</h4>
+					<select id="level-selector">
+						<!-- <option value="0">Level 0</option> -->
+					</select>
 				</div>
 
 				<!-- EDITOR MODE PANEL -->

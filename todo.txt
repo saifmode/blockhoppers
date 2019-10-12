@@ -1,5 +1,7 @@
 TODO:
 
+random levels
+
 Refactor code:
 Make it easier to add new blocks by creating a JSON? maybe, that then filters through into the level editor HTML, the Hoppers object and the drawGameBoard function (and any others that need it)
 
