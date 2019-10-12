@@ -669,6 +669,17 @@ module.exports = [{
   },
   "map": [["3", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "0"], ["0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"], ["0", "1", "0", "1", "5", "1", "5", "1", "5", "1", "5", "1", "5", "0", "1", "0"], ["0", "1", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "6", "1", "6", "1", "6", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "1", "0", "0", "0", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "1", "0", "4", "1", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "1", "5", "1", "5", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "1", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "6", "1", "6", "1", "6", "1", "6", "1", "0", "1", "0", "1", "0"], ["0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"], ["0", "1", "5", "1", "5", "1", "5", "1", "5", "1", "5", "1", "5", "0", "1", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"], ["6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "1", "6", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]]
 }, {
+  "name": "This Town Ain't Big Enough",
+  "hoppers": {
+    "max": 1,
+    "releaseRate": 100
+  },
+  "badHoppers": {
+    "max": 1,
+    "releaseRate": 100
+  },
+  "map": [["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "3", "0", "0", "0", "0", "0", "0", "0", "0", "7", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "4", "0", "0", "0", "0"], ["0", "0", "0", "6", "1", "1", "1", "1", "1", "1", "1", "1", "5", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]]
+}, {
   "name": "The Harder One",
   "hoppers": {
     "max": 1,
@@ -690,6 +701,17 @@ module.exports = [{
     "releaseRate": 100
   },
   "map": [["0", "0", "7", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "3", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "6", "2", "2", "0", "0", "0", "0", "0", "0"], ["0", "1", "1", "2", "2", "0", "0", "1", "1", "0", "2", "0", "0", "0", "0", "0"], ["0", "0", "0", "2", "2", "0", "1", "0", "0", "2", "1", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "2", "0", "1", "0", "1", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "1", "1", "0", "0", "2", "2", "2", "1", "0", "0"], ["0", "0", "0", "0", "0", "1", "1", "1", "0", "2", "1", "1", "0", "0", "2", "0"], ["0", "1", "1", "1", "1", "0", "0", "2", "0", "1", "0", "0", "1", "0", "0", "0"], ["2", "0", "0", "1", "1", "2", "0", "0", "1", "2", "0", "0", "1", "0", "0", "2"], ["1", "0", "0", "1", "0", "2", "0", "0", "1", "2", "0", "0", "0", "0", "0", "0"], ["0", "1", "0", "0", "1", "2", "0", "0", "0", "1", "0", "0", "1", "1", "1", "1"], ["1", "1", "0", "1", "2", "1", "1", "2", "0", "6", "0", "0", "1", "2", "1", "2"], ["1", "0", "0", "2", "2", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "2", "2", "1", "0", "0", "2", "1"], ["0", "0", "2", "0", "4", "0", "1", "0", "0", "2", "0", "0", "0", "0", "2", "0"]]
+}, {
+  "name": "Gauntlet",
+  "hoppers": {
+    "max": 1,
+    "releaseRate": 100
+  },
+  "badHoppers": {
+    "max": 3,
+    "releaseRate": 100
+  },
+  "map": [["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "7", "0", "0", "7", "0", "0", "7", "0", "0", "0", "0", "3", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "4", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "6", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "5", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]]
 }, {
   "name": "More levels coming soon!",
   "hoppers": {
@@ -779,6 +801,8 @@ function setHomeAddresses() {
 
   _game.spawnPoints.splice(0, _game.spawnPoints.length);
 
+  _game.badSpawnPoints.splice(0, _game.badSpawnPoints.length);
+
   for (var y = 0; y < _game.config.board.size; y++) {
     for (var x = 0; x < _game.config.board.size; x++) {
       if (_game.gameBoard[y][x] == "1") {
@@ -819,6 +843,7 @@ function clearBoard() {
   _game.badHoppers.splice(0, _game.badHoppers.length);
 
   _game.level.hoppers.max = 1;
+  _game.level.badHoppers.max = 0;
   _game.level.new = true;
 }
 
@@ -2334,12 +2359,18 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // GAME MODE BUTTONS
 dom.btn_playLevel.addEventListener("click", function () {
-  if (_game.config.mode == "editor") functions.setHomeAddresses();
+  if (_game.config.mode == "editor") {
+    functions.setHomeAddresses();
+  }
+
   domFunctions.hideFilePanel();
   domFunctions.togglePlayAndEditorButtons();
   domFunctions.showPlayingPanel();
   functions.activatePlayMode();
   if (!_game.config.random) domFunctions.showLevelSelect();
+
+  _game.badHoppers.splice(0, _game.badHoppers.length);
+
   var badSpawnPoints = 0;
 
   _game.gameBoard.forEach(function (row) {
@@ -2352,8 +2383,10 @@ dom.btn_playLevel.addEventListener("click", function () {
 
   if (badSpawnPoints > 0) {
     _game.level.badHoppers.max = badSpawnPoints;
-  } // dom.btn_randomLevels.innerText = "Random levels"
+    functions.setHomeAddresses();
+  }
 
+  hopperFunctions.resetHoppers(); // dom.btn_randomLevels.innerText = "Random levels"
 });
 dom.btn_levelEditor.addEventListener("click", function () {
   domFunctions.hideFilePanel();
@@ -2661,9 +2694,13 @@ function gameLoop() {
 
   if (!level.paused) {
     updateHoppers();
+    updateBadHoppers();
     exports.frame = frame = frame + 1;
   } else {
     hoppers.forEach(function (hopper) {
+      return hopper.draw();
+    });
+    badHoppers.forEach(function (hopper) {
       return hopper.draw();
     });
   }
@@ -2708,22 +2745,24 @@ function gameLoop() {
     dom.select_level.selectedIndex = level.current;
   }
 
-  badHoppers.forEach(function (baddie) {
-    baddie.update();
+  function updateBadHoppers() {
+    badHoppers.forEach(function (baddie) {
+      baddie.update();
 
-    if (baddie.killedHopper) {
-      // reset code, probably put this somewhere
-      if (level.new || config.random) {
-        hopperFunctions.resetHoppers();
-        functions.setHomeAddresses();
-        resetFrames();
-        baddie.killedHopper = false;
-      } else {
-        console.log("optherwise");
-        init();
+      if (baddie.killedHopper) {
+        // reset code, probably put this somewhere
+        if (level.new || config.random) {
+          hopperFunctions.resetHoppers();
+          functions.setHomeAddresses();
+          resetFrames();
+          baddie.killedHopper = false;
+        } else {
+          console.log("optherwise");
+          init();
+        }
       }
-    }
-  });
+    });
+  }
 } // Cheats
 
 
@@ -2768,7 +2807,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63219" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56005" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

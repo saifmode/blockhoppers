@@ -173,9 +173,11 @@ function gameLoop() {
 
 	if (!level.paused) {
 		updateHoppers();
+		updateBadHoppers();
 		frame += 1;
 	} else {
 		hoppers.forEach(hopper => hopper.draw());
+		badHoppers.forEach(hopper => hopper.draw());
 	}
 
 	function updateHoppers() {
@@ -218,7 +220,8 @@ function gameLoop() {
 		dom.select_level.selectedIndex = level.current;
 	}
 
-	badHoppers.forEach(baddie => {
+	function updateBadHoppers() {
+		badHoppers.forEach(baddie => {
 		baddie.update();
 		if (baddie.killedHopper) { // reset code, probably put this somewhere
 			if (level.new || config.random) {
@@ -229,6 +232,9 @@ function gameLoop() {
 		} else {console.log("optherwise");init();}
 		}
 	})
+	}
+
+	
 }
 
 // Cheats

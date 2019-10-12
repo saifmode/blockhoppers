@@ -7,6 +7,7 @@ import generateRandomLevel from "../functions/generateRandomLevel.js";
 import { config } from "../game.js";
 import { dragger } from "../game.js";
 import { editor } from "../game.js";
+import { badHoppers } from "../game.js";
 import { gameBoard } from "../game.js";
 import { hoppers } from "../game.js";
 import { init } from "../game.js";
@@ -19,14 +20,18 @@ import levels from "../data/levels.json";
 
 // GAME MODE BUTTONS
 dom.btn_playLevel.addEventListener("click", () => {
-	if (config.mode == "editor") functions.setHomeAddresses();
+	if (config.mode == "editor") {
+		functions.setHomeAddresses()
+	}
 	domFunctions.hideFilePanel();
 	domFunctions.togglePlayAndEditorButtons();
 	domFunctions.showPlayingPanel();
 	functions.activatePlayMode();
 	if (!config.random) domFunctions.showLevelSelect();
 
+	badHoppers.splice(0, badHoppers.length)
 	let badSpawnPoints = 0;
+
 	gameBoard.forEach(row => {
 		row.forEach(square => {
 			if (square == "7") {
@@ -35,8 +40,13 @@ dom.btn_playLevel.addEventListener("click", () => {
 		});
 	});
 	if (badSpawnPoints > 0) {
+
 		level.badHoppers.max = badSpawnPoints;
+		functions.setHomeAddresses()
+
 	}
+
+	hopperFunctions.resetHoppers();
 	// dom.btn_randomLevels.innerText = "Random levels"
 });
 
@@ -92,6 +102,7 @@ dom.btn_new.addEventListener("click", () => {
 	functions.clearBoard();
 	domFunctions.hideFilePanel();
 	domFunctions.showLevelHasBeenEdited();
+
 });
 
 dom.btn_load.addEventListener("click", () => {

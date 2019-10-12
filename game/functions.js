@@ -70,6 +70,7 @@ export function createGameBoardCopy(board) {
 export function setHomeAddresses() {
 	homeAddresses.splice(0, homeAddresses.length);
 	spawnPoints.splice(0, spawnPoints.length);
+	badSpawnPoints.splice(0, badSpawnPoints.length);
 	for (let y = 0; y < config.board.size; y++) {
 		for (let x = 0; x < config.board.size; x++) {
 			if (gameBoard[y][x] == "1") {
@@ -95,6 +96,7 @@ export function clearBoard() {
 	hoppers.splice(0, hoppers.length);
 	badHoppers.splice(0, badHoppers.length);
 	level.hoppers.max = 1;
+	level.badHoppers.max = 0;
 	level.new = true;
 }
 
