@@ -5,13 +5,19 @@ import { hoppers } from "../game.js";
 import { init } from "../game.js";
 import { input_newLevelName } from "../domElements.js";
 import { tileIcons } from "../domElements.js";
-import { resetFrames } from "../game.js"
+import { resetFrames } from "../game.js";
+import generateRandomLevel from "../functions/generateRandomLevel.js";
 
 import * as functions from "../functions.js";
 import * as domFunctions from "../functions/domFunctions.js";
-import * as hopperFunctions from "../functions/hopper.js"
+import * as hopperFunctions from "../functions/hopper.js";
 
 let notTyping = () => !(input_newLevelName === document.activeElement);
+window.addEventListener("keyup", e => {
+	if ((e.key == "g" || e.key == "G") && notTyping()) {
+		config.grid = !config.grid;
+	}
+});
 
 window.addEventListener("keyup", e => {
 	if ((e.key == "p" || e.key == "P") && notTyping()) {
@@ -53,6 +59,21 @@ window.addEventListener("keyup", e => {
 		domFunctions.showLevelHasBeenEdited();
 		hopperFunctions.killAHopper();
 		level.new = true;
+	}
+});
+
+// Cheats
+
+window.addEventListener("keyup", e => {
+	if (
+		(e.key == "n" || e.key == "N") &&
+		config.mode != "editor" &&
+		config.random
+	) {
+		console.log("hello????")
+		level.new = false;
+		level.current += 1;
+		init(generateRandomLevel());
 	}
 });
 

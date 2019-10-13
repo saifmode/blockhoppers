@@ -47,6 +47,7 @@ dom.btn_playLevel.addEventListener("click", () => {
 	}
 
 	hopperFunctions.resetHoppers();
+	config.grid = false;
 	// dom.btn_randomLevels.innerText = "Random levels"
 });
 
@@ -56,6 +57,7 @@ dom.btn_levelEditor.addEventListener("click", () => {
 	domFunctions.showEditorPanel();
 	domFunctions.hideLevelSelect();
 	functions.activateLevelEditor();
+	config.grid = true;
 	// dom.btn_randomLevels.innerText = "Random levels"
 });
 
@@ -70,6 +72,8 @@ dom.btn_randomLevels.addEventListener("click", () => {
 	domFunctions.hideLevelSelect();
 	// domFunctions.showPlayingPanel();
 	// functions.activatePlayMode();
+	if (!dom.info_perfectList.classList.contains("hidden"))
+		dom.info_perfectList.classList.add("hidden");
 });
 
 dom.btn_backToQuest.addEventListener("click", () => {
@@ -81,6 +85,8 @@ dom.btn_backToQuest.addEventListener("click", () => {
 	domFunctions.hideFilePanel();
 	domFunctions.showLevelSelect();
 	functions.activatePlayMode();
+	if (dom.info_perfectList.classList.contains("hidden"))
+		dom.info_perfectList.classList.remove("hidden");
 	init();
 });
 

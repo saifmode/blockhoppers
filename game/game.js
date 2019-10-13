@@ -3,7 +3,7 @@ import * as canvasFunctions from "./functions/canvas.js";
 import * as hopperFunctions from "./functions/hopper.js";
 import * as domFunctions from "./functions/domFunctions.js";
 import * as dom from "./domElements.js";
-import generateRandomLevel from "./functions/generateRandomLevel.js"
+import generateRandomLevel from "./functions/generateRandomLevel.js";
 import Hopper from "./classes/Hopper.js";
 import BadHopper from "./classes/BadHopper.js";
 import Selector from "./classes/Selector.js";
@@ -30,11 +30,13 @@ export const level = {
 	badHoppers: {
 		releaseRate: 100,
 		current: 0,
-		max: 1,
+		max: 1
 	},
 	completed: false,
 	paused: false,
-	new: false
+	new: false,
+	perfect: 0,
+	clicks: 0,
 };
 
 export const config = {
@@ -54,6 +56,7 @@ export const config = {
 		limit: 16
 	},
 
+	grid: false,
 	mode: "play",
 	random: false,
 
@@ -71,7 +74,7 @@ export const config = {
 		spawn: "blue",
 		leftArrow: "green",
 		rightArrow: "green",
-		badSpawn: "red",
+		badSpawn: "red"
 	}
 };
 
@@ -108,6 +111,7 @@ export const painter = new Painter();
 // export let badHopper = new BadHopper(200, 200);
 
 export function init(newLevel = levels[level.current]) {
+
 	level.new = false;
 	level.hoppers.current = 0;
 	level.hoppers.free = 0;
@@ -120,12 +124,28 @@ export function init(newLevel = levels[level.current]) {
 	if (newLevel.badHoppers.max > 0) {
 		level.badHoppers.max = newLevel.badHoppers.max;
 	} else {
-		level.badHoppers.max = 0
+		level.badHoppers.max = 0;
 	}
 
+	level.hoppers.releaseRate = newLevel.hoppers.releaseRate;
+	level.badHoppers.releaseRate = newLevel.badHoppers.releaseRate;
+	try {
+		level.perfect = newLevel.clicks;
+	} catch {
+		level.perfect = 0;
+	}
 
+	level.clicks = 0;
 	dom.info_levelName.innerHTML = newLevel.name;
+	dom.info_levelName.classList.remove("perfect");
+	if (window.localStorage.getItem(`perfectLevel${level.current}`)) {
+		dom.info_levelName.classList.add("perfect");
+	}
 	dom.info_toSave.innerHTML = level.hoppers.max;
+	dom.info_clicks.innerText = level.clicks;
+	dom.info_perfect.innerText = level.perfect;
+	if (!dom.info_perfectList.classList.contains("perfect"))
+		dom.info_perfectList.classList.add("perfect");
 
 	if (!dom.info_edited.classList.contains("hidden")) {
 		dom.info_edited.classList.add("hidden");
@@ -144,10 +164,10 @@ export function init(newLevel = levels[level.current]) {
 
 export let frame = 0;
 export function resetFrames() {
-	frame = -1
+	frame = -1;
 }
 export function setCompletedLevels(num) {
-	completedLevels = num
+	completedLevels = num;
 }
 
 function gameLoop() {
@@ -204,7 +224,10 @@ function gameLoop() {
 		(config.mode == "play" || config.random) &&
 		!level.new;
 
-	if (allHoppersRescued && config.random || ((level.hoppers.free > 1 && hoppers.length < 1) && config.random)) {
+	if (
+		(allHoppersRescued && config.random) ||
+		(level.hoppers.free > 1 && hoppers.length < 1 && config.random)
+	) {
 		level.current += 1;
 		init(generateRandomLevel());
 		// config.mode = "random";
@@ -212,44 +235,37 @@ function gameLoop() {
 		domFunctions.showPlayingPanel();
 		functions.activatePlayMode();
 	} else if (allHoppersRescued && config.mode == "play") {
+		if (level.clicks <= level.perfect) {
+			window.localStorage.setItem(`perfectLevel${level.current}`, true);
+		}
+
 		functions.loadNextLevel();
 		if (completedLevels < level.current && !config.random) {
 			completedLevels = level.current;
-			functions.addToCompletedList();	
+			functions.addToCompletedList();
 		}
 		dom.select_level.selectedIndex = level.current;
 	}
 
 	function updateBadHoppers() {
 		badHoppers.forEach(baddie => {
-		baddie.update();
-		if (baddie.killedHopper) { // reset code, probably put this somewhere
-			if (level.new || config.random) {
-			hopperFunctions.resetHoppers();
-			functions.setHomeAddresses();
-			resetFrames();
-			baddie.killedHopper = false
-		} else {console.log("optherwise");init();}
-		}
-	})
+			baddie.update();
+			if (baddie.killedHopper) {
+				// reset code, probably put this somewhere
+				if (level.new || config.random) {
+					hopperFunctions.resetHoppers();
+					functions.setHomeAddresses();
+					resetFrames();
+					baddie.killedHopper = false;
+				} else init();
+			}
+		});
 	}
-
-	
 }
 
-// Cheats
 
-window.addEventListener("keyup", e => {
-	if ((e.key == "n" || e.key == "N")) {
-		if (config.mode == "play" && !config.random) functions.loadNextLevel();
-		else {
-				level.new = false;
-				level.current += 1;
-				init(generateRandomLevel());
-		}
-	}
-});
-// window.localStorage.removeItem("completedLevels")
+
+
 domFunctions.populateLevelSelector();
 init();
 gameLoop();

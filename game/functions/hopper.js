@@ -78,7 +78,7 @@ export function spawnSingleBadHopper() {
 
 export function spawnBadHoppers() {
 	let timeToSpawnHopper = () =>
-		frame == 0 || frame % level.hoppers.releaseRate == 0;
+		frame == 0 || frame % level.badHoppers.releaseRate == 0;
 	let notEnoughHoppers =
 		level.badHoppers.max > level.badHoppers.current &&
 		badHoppers.length < config.badHopper.limit;

@@ -2,10 +2,16 @@ import { c } from "../game.js";
 import { canvas } from "../game.js";
 import { config } from "../game.js";
 import { gameBoard } from "../game.js";
+import { homeAddresses } from "../game.js";
+import { selector } from "../game.js"
 
 export function drawGameBoard() {
 	for (let y = 0; y < config.board.size; y++) {
 		for (let x = 0; x < config.board.size; x++) {
+			// if (!selector.draggingBlock) drawAnchors();\	
+			if (config.grid)
+				drawGrid(x, y);
+
 			switch (gameBoard[y][x]) {
 				case "0":
 					drawBlock(x, y, config.colors.empty);
@@ -35,9 +41,35 @@ export function drawGameBoard() {
 					break;
 			}
 
-			if (config.mode == "editor") drawGrid(x, y);
+			
+
+
 		}
 	}
+
+	// function drawAnchors() {
+	// 	let anchors = homeAddresses.filter(
+	// 		address =>
+	// 			!(
+	// 				address.home.x == address.current.x &&
+	// 				address.home.y == address.current.y
+	// 			)
+	// 	);
+	// 	anchors.forEach(anchor => {
+	// 		c.save();
+	// 		c.beginPath();
+	// 		c.strokeStyle = "orange";
+	// 		c.moveTo((anchor.home.x * config.board.spacing) + (config.board.spacing / 2), (anchor.home.y * config.board.spacing) + (config.board.spacing / 2));
+	// 		c.lineTo((anchor.current.x * config.board.spacing) + (config.board.spacing / 2), (anchor.current.y * config.board.spacing) + (config.board.spacing / 2));
+	// 		c.stroke();
+	// 		c.closePath();
+	// 		c.restore();
+	// 		c.save();
+	// 		c.beginPath();
+	// 		c.fillStyle = "orange";
+	// 		c.fillRect((anchor.home.x * config.board.spacing) + (config.board.spacing / 2) - 3, (anchor.home.y * config.board.spacing) + (config.board.spacing / 2) - 3, 6, 6)
+	// 	})
+	// }
 
 	function drawBlock(x, y, color) {
 		c.save();
@@ -106,7 +138,7 @@ export function drawGameBoard() {
 	function drawGrid(x, y) {
 		c.save();
 		c.beginPath();
-		c.fillStyle = "white";
+		c.fillStyle = "#666";
 		c.arc(
 			x * config.board.spacing,
 			y * config.board.spacing,
@@ -116,6 +148,11 @@ export function drawGameBoard() {
 			true
 		);
 		c.fill();
+		// c.strokeStyle = "#333";
+		// c.beginPath()
+		// c.moveTo(x*config.board.spacing, y*config.board.spacing);
+		// c.lineTo(x*config.board.spacing, y*config.board.spacing + y*config.board.spacing)
+		// c.stroke()
 		c.closePath();
 		c.restore();
 	}

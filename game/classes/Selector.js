@@ -3,9 +3,12 @@ import { c } from "../game.js";
 import { canvas } from "../game.js";
 import { gameBoard } from "../game.js";
 import { homeAddresses } from "../game.js";
+import { level } from "../game.js";
 import { mouse } from "../eventListeners/mouse.js";
 import { mousedown } from "../eventListeners/mouse.js";
 import { hoppers } from "../game.js";
+import * as dom from "../domElements.js";
+import * as functions from "../functions.js";
 
 export default class Selector {
 	constructor() {
@@ -32,9 +35,22 @@ export default class Selector {
 					address.current.x == mouseGridX &&
 					address.current.y == mouseGridY
 			)[0]; // First key of address in object is home address, hence [0]
-			this.homeX = address.home.x * config.board.spacing;
-			this.homeY = address.home.y * config.board.spacing;
+			try {
+				this.homeX = address.home.x * config.board.spacing;
+				this.homeY = address.home.y * config.board.spacing;
+			} catch {
+				functions.setHomeAddresses();
+				let address = homeAddresses.filter(
+					address =>
+						address.current.x == mouseGridX &&
+						address.current.y == mouseGridY
+				)[0];
+				this.homeX = address.home.x * config.board.spacing;
+				this.homeY = address.home.y * config.board.spacing;
+			}
+
 			this.whatBlockWas = gameBoard[mouseGridY][mouseGridX];
+			// console.log(address);
 		};
 
 		const setNewCurrentAddress = () => {
@@ -48,7 +64,8 @@ export default class Selector {
 					address.current.x = thisBlockX;
 					address.current.y = thisBlockY;
 				}
-			});};
+			});
+		};
 		const dropBlockOnEmptySquare = () => {
 			this.dragging = false;
 			setNewCurrentAddress();
@@ -62,17 +79,24 @@ export default class Selector {
 					config.board.spacing
 				);
 			}
-			this.draggingBlock = false;};
+			this.draggingBlock = false;
+			level.clicks += 1;
+			dom.info_clicks.innerHTML = level.clicks;
+			if (level.clicks > level.perfect) {
+				dom.info_perfectList.classList.remove("perfect");
+			}
+		};
 		const moveBlockToMousePosition = () => {
 			this.x =
 				Math.floor(mouse.x / config.board.spacing) *
 				config.board.spacing;
 			this.y =
 				Math.floor(mouse.y / config.board.spacing) *
-				config.board.spacing;};
+				config.board.spacing;
+		};
 
 		// Methods
-		
+
 		// Skip mouseIsInHomeRange tests if you want to drag the block anywhere, e.g. during level editing.
 		let mouseIsInHomeRange = () =>
 			mouse.x < this.homeX + config.board.spacing * 2 &&
@@ -88,7 +112,8 @@ export default class Selector {
 				return gameBoard[mouseGridY][mouseGridX] == "1";
 			} catch {
 				return false;
-			}};
+			}
+		};
 		let hasStoppedDragging = () => this.dragging && !mousedown;
 		let hasStoppedDraggingBlock = () => this.draggingBlock && !mousedown;
 		let isDraggingBlock = () => this.draggingBlock && mousedown;
@@ -97,13 +122,15 @@ export default class Selector {
 				return gameBoard[mouseGridY][mouseGridX] == "0";
 			} catch {
 				return false;
-			}};
+			}
+		};
 		let blockOverlappingEmptySquare = () => {
 			try {
 				return gameBoard[thisBlockY][thisBlockX] == "0";
 			} catch {
 				return false;
-			}};
+			}
+		};
 		let mouseOverlappingHopper = () =>
 			hoppers.some(hopper => {
 				try {
@@ -137,7 +164,6 @@ export default class Selector {
 				}
 			});
 
-		
 		let hasStartedDraggingBlock = () =>
 			!this.draggingBlock && mousedown && mouseIsOverlappingBlock();
 		let hasStartedDraggingNothing = () =>
@@ -171,16 +197,27 @@ export default class Selector {
 		if (blockOverlappingHopper() && mouseOverlappingHopper()) {
 			this.draw();
 			return;
-		} else if (blockOverlappingHopper() && !mouseOverlappingHopper() && mouseOverlappingEmptySquare() && mouseIsInHomeRange()) {
+		} else if (
+			blockOverlappingHopper() &&
+			!mouseOverlappingHopper() &&
+			mouseOverlappingEmptySquare() &&
+			mouseIsInHomeRange()
+		) {
 			moveBlockToMousePosition();
-		} else if (blockOverlappingHopper() && (!mouseIsInHomeRange() || !mouseOverlappingEmptySquare())) {
-			this.draw()
-			return
+		} else if (
+			blockOverlappingHopper() &&
+			(!mouseIsInHomeRange() || !mouseOverlappingEmptySquare())
+		) {
+			this.draw();
+			return;
 		}
 
 		if (isDraggingOverEmptySquare() && mouseIsInHomeRange()) {
-			moveBlockToMousePosition()
-		} else if (hasDroppedBlockOnEmptySquare() || hasDroppedBlockOnHopper()) {
+			moveBlockToMousePosition();
+		} else if (
+			hasDroppedBlockOnEmptySquare() ||
+			hasDroppedBlockOnHopper()
+		) {
 			dropBlockOnEmptySquare();
 		}
 

@@ -199,3 +199,12 @@ span {
 .warning {
 	color: #d6204e;
 }
+
+.perfect {
+	color: #c5b358;
+}
+
+#copyright {
+	color: #bbb;
+	font-size: 10px;
+}

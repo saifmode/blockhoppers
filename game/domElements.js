@@ -14,6 +14,9 @@ export const btn_save = document.getElementById("save");
 export const info_edited = document.getElementById("edited");
 export const info_levelName = document.getElementById("level-name");
 export const info_toSave = document.getElementById("to-save");
+export const info_clicks = document.getElementById("clicks");
+export const info_perfect = document.getElementById("perfect");
+export const info_perfectList = document.getElementById("perfect-list");
 
 export const input_levelToLoad = document.getElementById("level-to-load");
 export const input_newLevelName = document.getElementById("new-level-name");
