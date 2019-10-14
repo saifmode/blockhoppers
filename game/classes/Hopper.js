@@ -31,7 +31,7 @@ export default class Hopper {
 		let gridY = Math.floor(this.y / config.board.spacing);
 
 		let block = ["1", "2", "5", "6"]; // These correspond to blocks that hoppers can't move through
-		let empty = ["0", "3", "4"]; // Correspond to empty squares or exit
+		let empty = ["0", "3", "4", "7"]; // Correspond to empty squares or exit
 		let exit = "4";
 
 		let px_blockTop = (gridY + 1) * config.board.spacing; // y coordinate of top of block
@@ -140,14 +140,13 @@ export default class Hopper {
 		let reachedExit = () => gameBoard[gridY][gridX] == "4";
 
 		let fellThroughFloor = () =>
-			this.bottom + this.dy > canvas.height && gameBoard[0][gridX] == "0";
+			this.bottom + this.dy > canvas.height && empty.includes(gameBoard[0][gridX]);
 		let wrappedThroughFloorAndHitCeiling = () =>
 			this.bottom + this.dy > canvas.height &&
-			(gameBoard[0][gridX] != "0" || gameBoard[0][gridX] != "3" || gameBoard[0][gridX] != "4") &&
-			!this.onCeiling;
+			!empty.includes(gameBoard[0][gridX]) && !this.onCeiling;
 		let fellThroughCeiling = () =>
 			this.onCeiling &&
-			(gameBoard[0][gridX] == "0" || gameBoard[0][gridX] == "3" || gameBoard[0][gridX] == "4") &&
+			empty.includes(gameBoard[0][gridX]) &&
 			((this.left + 1 > gridX * config.board.spacing &&
 				this.direction == "right") ||
 				(this.right - 1 < (gridX + 1) * config.board.spacing &&
