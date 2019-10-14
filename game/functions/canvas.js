@@ -2,6 +2,7 @@ import { c } from "../game.js";
 import { canvas } from "../game.js";
 import { config } from "../game.js";
 import { gameBoard } from "../game.js";
+import { level } from "../game.js";
 import { homeAddresses } from "../game.js";
 import { selector } from "../game.js"
 
@@ -14,7 +15,8 @@ export function drawGameBoard() {
 
 			switch (gameBoard[y][x]) {
 				case "0":
-					drawBlock(x, y, config.colors.empty);
+					let background = level.paused ? "#003300" : config.colors.empty;
+					drawBlock(x, y, background);
 					break;
 				case "1":
 					drawBlock(x, y, config.colors.movable);
