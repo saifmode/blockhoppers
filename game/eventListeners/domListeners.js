@@ -1,7 +1,7 @@
 import * as dom from "../domElements.js";
 import * as functions from "../functions.js";
 import * as domFunctions from "../functions/domFunctions.js";
-import * as hopperFunctions from "../functions/hopper.js"
+import * as hopperFunctions from "../functions/hopper.js";
 import generateRandomLevel from "../functions/generateRandomLevel.js";
 
 import { config } from "../game.js";
@@ -21,7 +21,7 @@ import levels from "../data/levels.json";
 // GAME MODE BUTTONS
 dom.btn_playLevel.addEventListener("click", () => {
 	if (config.mode == "editor") {
-		functions.setHomeAddresses()
+		functions.setHomeAddresses();
 	}
 	domFunctions.hideFilePanel();
 	domFunctions.togglePlayAndEditorButtons();
@@ -29,7 +29,7 @@ dom.btn_playLevel.addEventListener("click", () => {
 	functions.activatePlayMode();
 	if (!config.random) domFunctions.showLevelSelect();
 
-	badHoppers.splice(0, badHoppers.length)
+	badHoppers.splice(0, badHoppers.length);
 	let badSpawnPoints = 0;
 
 	gameBoard.forEach(row => {
@@ -40,10 +40,8 @@ dom.btn_playLevel.addEventListener("click", () => {
 		});
 	});
 	if (badSpawnPoints > 0) {
-
 		level.badHoppers.max = badSpawnPoints;
-		functions.setHomeAddresses()
-
+		functions.setHomeAddresses();
 	}
 
 	hopperFunctions.resetHoppers();
@@ -108,7 +106,6 @@ dom.btn_new.addEventListener("click", () => {
 	functions.clearBoard();
 	domFunctions.hideFilePanel();
 	domFunctions.showLevelHasBeenEdited();
-
 });
 
 dom.btn_load.addEventListener("click", () => {
@@ -122,12 +119,7 @@ dom.btn_load.addEventListener("click", () => {
 });
 
 // LEVEL EDITOR INPUTS
-
-dom.input_newLevelName.addEventListener("click", domFunctions.hideFilePanel);
-dom.input_newHoppersToSave.addEventListener(
-	"click",
-	domFunctions.hideFilePanel
-);
+dom.allInputs.forEach(element => element.addEventListener("click", domFunctions.hideFilePanel));
 
 dom.input_newLevelName.addEventListener("input", e => {
 	dom.info_levelName.innerHTML = dom.input_newLevelName.value;
@@ -148,6 +140,21 @@ dom.input_newHoppersToSave.addEventListener("input", e => {
 	domFunctions.hideFilePanel();
 	domFunctions.showLevelHasBeenEdited();
 });
+dom.input_newPerfect.addEventListener("input", e => {
+	let newPerfect = dom.input_newPerfect.value;
+	if (newPerfect <= 0 ) {
+		level.perfect = 1;
+		dom.info_perfect.innerHTML = 1;
+	} else {
+		level.perfect = newPerfect;
+		dom.info_perfect.innerHTML = level.perfect;
+	}
+
+	level.new = true;
+
+	domFunctions.hideFilePanel();
+	domFunctions.showLevelHasBeenEdited();
+})
 
 // LEVEL EDITOR TILES
 

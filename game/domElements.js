@@ -18,9 +18,11 @@ export const info_clicks = document.getElementById("clicks");
 export const info_perfect = document.getElementById("perfect");
 export const info_perfectList = document.getElementById("perfect-list");
 
+export const allInputs = document.querySelectorAll(".config-input");
 export const input_levelToLoad = document.getElementById("level-to-load");
 export const input_newLevelName = document.getElementById("new-level-name");
 export const input_newHoppersToSave = document.getElementById("new-hoppers-to-save");
+export const input_newPerfect = document.getElementById("new-perfect");
 
 export const select_level = document.getElementById("level-selector");
 

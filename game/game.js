@@ -36,13 +36,26 @@ export const level = {
 	paused: false,
 	new: false,
 	perfect: 0,
-	clicks: 0,
+	clicks: 0
 };
 
 export const config = {
 	board: {
 		size: 16,
 		spacing: 32
+	},
+
+	blocks: {
+		empty: "0",
+		movable: "1",
+		immovable: "2",
+		spawnPoint: "3",
+		exit: "4",
+		leftArrow: "5",
+		rightArrow: "6",
+		badSpawnPoint: "7",
+		solid: ["1", "2", "5", "6"],
+		permeable: ["0", "3", "4", "7"]
 	},
 
 	hopper: {
@@ -111,11 +124,14 @@ export const painter = new Painter();
 // export let badHopper = new BadHopper(200, 200);
 
 export function init(newLevel = levels[level.current]) {
-
 	level.new = false;
 	level.hoppers.current = 0;
 	level.hoppers.free = 0;
 	level.badHoppers.current = 0;
+	config.physics.gravity = 0.3;
+	config.physics.speed = 1.5;
+	config.physics.terminal = 9.8;
+
 	if (newLevel.hoppers.max > 0) {
 		level.hoppers.max = newLevel.hoppers.max;
 	} else {
@@ -249,6 +265,7 @@ function gameLoop() {
 
 	function updateBadHoppers() {
 		badHoppers.forEach(baddie => {
+			baddie.testCollision();
 			baddie.update();
 			if (baddie.killedHopper) {
 				// reset code, probably put this somewhere
@@ -262,9 +279,6 @@ function gameLoop() {
 		});
 	}
 }
-
-
-
 
 domFunctions.populateLevelSelector();
 init();

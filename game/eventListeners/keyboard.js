@@ -13,6 +13,29 @@ import * as domFunctions from "../functions/domFunctions.js";
 import * as hopperFunctions from "../functions/hopper.js";
 
 let notTyping = () => !(input_newLevelName === document.activeElement);
+
+window.addEventListener("keyup", e => {
+	if (e.key == "]" && notTyping()) {
+		config.physics.speed += 0.5
+		config.physics.gravity += 0.1
+		config.physics.terminal += 0.5
+		config.physics.speed = Math.min(5, config.physics.speed)
+		config.physics.gravity = Math.min(1, config.physics.gravity)
+		config.physics.terminal = Math.min(13.3, config.physics.terminal);
+	}
+})
+
+window.addEventListener("keyup", e => {
+	if (e.key == "[" && notTyping()) {
+		config.physics.gravity -= 0.2
+		config.physics.speed -= 0.5
+		config.physics.gravity = Math.max(0.1, config.physics.gravity)
+		config.physics.speed = Math.max(0.5, config.physics.speed)
+		config.physics.terminal = Math.max(6.3, config.physics.terminal);
+
+	}
+})
+
 window.addEventListener("keyup", e => {
 	if ((e.key == "g" || e.key == "G") && notTyping()) {
 		config.grid = !config.grid;
@@ -28,7 +51,10 @@ window.addEventListener("keyup", e => {
 
 window.addEventListener("keyup", e => {
 	if ((e.key == "r" || e.key == "R") && config.mode == "play") {
+		level.clicks = 0;
+		
 		if (level.new || config.random) {
+			level.clicks = 0;
 			hopperFunctions.resetHoppers();
 			functions.setHomeAddresses();
 			resetFrames();

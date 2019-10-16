@@ -8,6 +8,7 @@ export default class Hopper {
 		this.x = x;
 		this.y = y;
 		this.radius = config.hopper.radius;
+		this.color = config.hopper.color;
 		// Collision detectors
 		this.left = x - this.radius;
 		this.right = x + this.radius;
@@ -21,8 +22,6 @@ export default class Hopper {
 		this.dx = config.physics.speed;
 		this.dy = config.physics.speed;
 		this.terminal = config.terminal;
-
-		this.bad = false;
 	}
 
 	update() {
@@ -30,16 +29,12 @@ export default class Hopper {
 		let gridX = Math.floor(this.x / config.board.spacing);
 		let gridY = Math.floor(this.y / config.board.spacing);
 
-		let block = ["1", "2", "5", "6"]; // These correspond to blocks that hoppers can't move through
-		let empty = ["0", "3", "4", "7"]; // Correspond to empty squares or exit
-		let exit = "4";
-
 		let px_blockTop = (gridY + 1) * config.board.spacing; // y coordinate of top of block
 		// HELPER FUNCTIONS
 		let rollingOntoLeftArrow = () => {
 			try {
 				if (
-					gameBoard[gridY + 1][gridX + 1] == "5" &&
+					gameBoard[gridY + 1][gridX + 1] == config.blocks.leftArrow &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -54,7 +49,7 @@ export default class Hopper {
 		let rollingOntoRightArrow = () => {
 			try {
 				if (
-					gameBoard[gridY + 1][gridX - 1] == "6" &&
+					gameBoard[gridY + 1][gridX - 1] == config.blocks.rightArrow &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -69,7 +64,7 @@ export default class Hopper {
 		let isRollingOverLeftArrow = () => {
 			try {
 				if (
-					gameBoard[gridY + 1][gridX] == "5" &&
+					gameBoard[gridY + 1][gridX] == config.blocks.leftArrow &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -79,7 +74,7 @@ export default class Hopper {
 			} catch {
 				if (
 					gridY == config.board.size - 1 &&
-					gameBoard[0][gridX] == "5" &&
+					gameBoard[0][gridX] == config.blocks.leftArrow &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -91,7 +86,7 @@ export default class Hopper {
 
 		let isRollingOverRightArrow = () => {
 			try {
-				if (gameBoard[gridY + 1][gridX] == "6") {
+				if (gameBoard[gridY + 1][gridX] == config.blocks.rightArrow) {
 					return true;
 				} else {
 					return false;
@@ -99,7 +94,7 @@ export default class Hopper {
 			} catch {
 				if (
 					gridY == config.board.size - 1 &&
-					gameBoard[0][gridX] == "6" &&
+					gameBoard[0][gridX] == config.blocks.rightArrow &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -110,20 +105,20 @@ export default class Hopper {
 		};
 
 		let isWallToLeft = () =>
-			block.includes(gameBoard[gridY][gridX - 1]) ||
+			config.blocks.solid.includes(gameBoard[gridY][gridX - 1]) ||
 			rollingOntoRightArrow();
 		let isWallToRight = () =>
-			block.includes(gameBoard[gridY][gridX + 1]) ||
+			config.blocks.solid.includes(gameBoard[gridY][gridX + 1]) ||
 			rollingOntoLeftArrow();
 		let isWallToRightWrap = () =>
-			this.x > canvas.width && block.includes(gameBoard[gridY][0]);
+			this.x > canvas.width && config.blocks.solid.includes(gameBoard[gridY][0]);
 		let isWallToLeftWrap = () =>
 			this.x <= 0 &&
-			block.includes(gameBoard[gridY][config.board.size - 1]);
+			config.blocks.solid.includes(gameBoard[gridY][config.board.size - 1]);
 
 		let isFloorBelowHopper = () => {
 			try {
-				return block.includes(gameBoard[gridY + 1][gridX]);
+				return config.blocks.solid.includes(gameBoard[gridY + 1][gridX]);
 			} catch {
 				return false;
 			}
@@ -131,7 +126,7 @@ export default class Hopper {
 
 		let isNoFloorBelowHopper = () => {
 			try {
-				return empty.includes(gameBoard[gridY + 1][gridX]);
+				return config.blocks.permeable.includes(gameBoard[gridY + 1][gridX]);
 			} catch {
 				return true;
 			}
@@ -140,13 +135,13 @@ export default class Hopper {
 		let reachedExit = () => gameBoard[gridY][gridX] == "4";
 
 		let fellThroughFloor = () =>
-			this.bottom + this.dy > canvas.height && empty.includes(gameBoard[0][gridX]);
+			this.bottom + this.dy > canvas.height && config.blocks.permeable.includes(gameBoard[0][gridX]);
 		let wrappedThroughFloorAndHitCeiling = () =>
 			this.bottom + this.dy > canvas.height &&
-			!empty.includes(gameBoard[0][gridX]) && !this.onCeiling;
+			!config.blocks.permeable.includes(gameBoard[0][gridX]) && !this.onCeiling;
 		let fellThroughCeiling = () =>
 			this.onCeiling &&
-			empty.includes(gameBoard[0][gridX]) &&
+			config.blocks.permeable.includes(gameBoard[0][gridX]) &&
 			((this.left + 1 > gridX * config.board.spacing &&
 				this.direction == "right") ||
 				(this.right - 1 < (gridX + 1) * config.board.spacing &&
@@ -166,10 +161,10 @@ export default class Hopper {
 			if (this.bottom + this.dy > px_blockTop) {
 				this.y = px_blockTop - this.radius; // Correcting position
 				this.movement = "rolling";
-				if (gameBoard[gridY + 1][gridX] == "5") {
+				if (gameBoard[gridY + 1][gridX] == config.blocks.leftArrow) {
 					// Left arrow
 					this.direction = "left";
-				} else if (gameBoard[gridY + 1][gridX] == "6") {
+				} else if (gameBoard[gridY + 1][gridX] == config.blocks.rightArrow) {
 					this.direction = "right";
 				}
 			}
@@ -275,7 +270,7 @@ export default class Hopper {
 	draw() {
 		c.save();
 		c.beginPath();
-		c.fillStyle = config.hopper.color;
+		c.fillStyle = this.color;
 		c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
 		c.fill();
 		c.closePath();

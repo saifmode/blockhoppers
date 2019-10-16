@@ -119,6 +119,13 @@ export function generateLevelJSON() {
 		level.hoppers.max = newMax;
 	}
 
+	let newPerfect = dom.input_newPerfect.value;
+	if (newPerfect <= 0 ) {
+		newPerfect = 1
+	} else {
+		level.perfect = newPerfect;
+	}
+
 	let badSpawnPoints = 0;
 	gameBoard.forEach(row => {
 		row.forEach(square => {
@@ -138,6 +145,7 @@ export function generateLevelJSON() {
 			max: badSpawnPoints,
 			releaseRate: 100
 		},
+		clicks: newPerfect,
 		map: gameBoard
 	};
 }
