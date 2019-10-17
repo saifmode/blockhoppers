@@ -71,13 +71,26 @@ export default class Selector {
 			setNewCurrentAddress();
 			gameBoard[thisBlockY][thisBlockX] = this.whatBlockWas;
 			if (this.draggingBlock) {
-				c.fillStyle = "pink";
-				c.fillRect(
-					this.x,
-					this.y,
-					config.board.spacing,
-					config.board.spacing
-				);
+				c.fillStyle = "orange";
+				if (config.blocks.portals.includes(this.whatBlockWas)) {
+					c.arc(
+				this.x + config.board.spacing / 2,
+				this.y + config.board.spacing / 2,
+				config.board.spacing / 2,
+				0,
+				Math.PI * 2,
+				true
+			);
+			c.fill();
+				} else {
+					c.fillStyle = "pink";
+					c.fillRect(
+						this.x,
+						this.y,
+						config.board.spacing,
+						config.board.spacing
+					);
+				}
 			}
 			this.draggingBlock = false;
 			level.clicks += 1;
@@ -109,7 +122,9 @@ export default class Selector {
 			mouse.y >= 0;
 		let mouseIsOverlappingBlock = () => {
 			try {
-				return gameBoard[mouseGridY][mouseGridX] == "1";
+				return config.blocks.canBeMoved.includes(
+					gameBoard[mouseGridY][mouseGridX]
+				);
 			} catch {
 				return false;
 			}
@@ -157,7 +172,7 @@ export default class Selector {
 						hopper.y / config.board.spacing
 					);
 					return (
-						thisBlockX == hopperGridX && thisBlockY == hopperGridY
+						thisBlockX == hopperGridX && thisBlockY == hopperGridY && (!config.blocks.portals.includes(gameBoard[hopperGridy][hopperGridX]))
 					);
 				} catch {
 					return false;
@@ -244,7 +259,28 @@ export default class Selector {
 		c.closePath();
 		c.restore();
 
+		c.save();
+		c.beginPath();
 		c.fillStyle = "orange";
-		c.fillRect(this.x, this.y, config.board.spacing, config.board.spacing);
+		if (this.whatBlockWas == config.blocks.movable) {
+			c.fillRect(
+				this.x,
+				this.y,
+				config.board.spacing,
+				config.board.spacing
+			);
+		} else {
+			c.arc(
+				this.x + config.board.spacing / 2,
+				this.y + config.board.spacing / 2,
+				config.board.spacing / 2,
+				0,
+				Math.PI * 2,
+				true
+			);
+			c.fill();
+		}
+		c.closePath();
+		c.restore();
 	}
 }

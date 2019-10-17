@@ -96,7 +96,7 @@ export default class Painter {
 		c.strokeStyle = "white";
 		c.fillStyle = this.overlappingHopper
 			? "red"
-			: config.colors.list[this.blockType];
+			: config.colors.list[parseInt(this.blockType)];
 		c.rect(this.x, this.y, config.board.spacing, config.board.spacing);
 		c.fillRect(this.x, this.y, config.board.spacing, config.board.spacing);
 		c.stroke();

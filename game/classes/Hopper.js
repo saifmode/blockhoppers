@@ -31,10 +31,21 @@ export default class Hopper {
 
 		let px_blockTop = (gridY + 1) * config.board.spacing; // y coordinate of top of block
 		// HELPER FUNCTIONS
+		let reachedExit = () => gameBoard[gridY][gridX] == "4";
+		let enteredPortalA = () => gameBoard[gridY][gridX] == "8";
+		let enteredPortalB = () => gameBoard[gridY][gridX] == "9";
+		let enteredSolidPortalA = () => gameBoard[gridY][gridX] == "10";
+		let enteredSolidPortalB = () => gameBoard[gridY][gridX] == "11";
+
+		let wallRightOfBlock = (x, y) => config.blocks.solid.includes(gameBoard[y][x + 1]);
+		let wallLeftOfBlock = (x, y) => config.blocks.solid.includes(gameBoard[y][x - 1]);
+		let wallBeneathBlock = (x, y) => config.blocks.solid.includes(gameBoard[y + 1][x]);
+
 		let rollingOntoLeftArrow = () => {
 			try {
 				if (
-					gameBoard[gridY + 1][gridX + 1] == config.blocks.leftArrow &&
+					gameBoard[gridY + 1][gridX + 1] ==
+						config.blocks.leftArrow &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -49,7 +60,8 @@ export default class Hopper {
 		let rollingOntoRightArrow = () => {
 			try {
 				if (
-					gameBoard[gridY + 1][gridX - 1] == config.blocks.rightArrow &&
+					gameBoard[gridY + 1][gridX - 1] ==
+						config.blocks.rightArrow &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -111,14 +123,19 @@ export default class Hopper {
 			config.blocks.solid.includes(gameBoard[gridY][gridX + 1]) ||
 			rollingOntoLeftArrow();
 		let isWallToRightWrap = () =>
-			this.x > canvas.width && config.blocks.solid.includes(gameBoard[gridY][0]);
+			this.x > canvas.width &&
+			config.blocks.solid.includes(gameBoard[gridY][0]);
 		let isWallToLeftWrap = () =>
 			this.x <= 0 &&
-			config.blocks.solid.includes(gameBoard[gridY][config.board.size - 1]);
+			config.blocks.solid.includes(
+				gameBoard[gridY][config.board.size - 1]
+			);
 
 		let isFloorBelowHopper = () => {
 			try {
-				return config.blocks.solid.includes(gameBoard[gridY + 1][gridX]);
+				return config.blocks.solid.includes(
+					gameBoard[gridY + 1][gridX]
+				);
 			} catch {
 				return false;
 			}
@@ -126,19 +143,21 @@ export default class Hopper {
 
 		let isNoFloorBelowHopper = () => {
 			try {
-				return config.blocks.permeable.includes(gameBoard[gridY + 1][gridX]);
+				return config.blocks.permeable.includes(
+					gameBoard[gridY + 1][gridX]
+				);
 			} catch {
 				return true;
 			}
 		};
 
-		let reachedExit = () => gameBoard[gridY][gridX] == "4";
-
 		let fellThroughFloor = () =>
-			this.bottom + this.dy > canvas.height && config.blocks.permeable.includes(gameBoard[0][gridX]);
+			this.bottom + this.dy > canvas.height &&
+			config.blocks.permeable.includes(gameBoard[0][gridX]);
 		let wrappedThroughFloorAndHitCeiling = () =>
 			this.bottom + this.dy > canvas.height &&
-			!config.blocks.permeable.includes(gameBoard[0][gridX]) && !this.onCeiling;
+			!config.blocks.permeable.includes(gameBoard[0][gridX]) &&
+			!this.onCeiling;
 		let fellThroughCeiling = () =>
 			this.onCeiling &&
 			config.blocks.permeable.includes(gameBoard[0][gridX]) &&
@@ -148,10 +167,51 @@ export default class Hopper {
 					this.direction == "left"));
 
 		// COLLISIONS
+		const emergeFrom = (tile) => {
+			for (let y = 0; y < config.board.size; y++) {
+				for (let x = 0; x < config.board.size; x++) {
+					if (gameBoard[y][x] == tile) {
+						if ((wallLeftOfBlock(x, y) && this.direction == "left" && this.movement == "rolling") ||
+							(wallRightOfBlock(x, y) && this.direction == "right" && this.movement == "rolling") ||
+							wallBeneathBlock(x, y) && this.movement == "falling") {
+							break;
+						}
+
+						if (this.movement == "falling") {
+							this.x = (x * config.board.spacing) + (config.board.spacing / 2)
+						} else if (this.direction == "left") {
+							this.x = x * config.board.spacing
+						} else if (this.direction == "right") {
+							this.x = (x * config.board.spacing) + config.board.spacing
+						}
+						
+						if (this.movement == "falling") {
+							this.y =
+							y * config.board.spacing +
+							config.board.spacing;
+						} else {
+							this.y =
+							y * config.board.spacing +
+							config.board.spacing -
+							this.radius;
+						}
+						
+						break;
+					}
+				}
+			}
+			return false
+		}
 
 		// Test if hopper has reached exit
 		if (reachedExit()) {
 			this.free = true;
+		} else if (enteredPortalA() || enteredSolidPortalA()) {
+			if (emergeFrom("9")) {}
+			else emergeFrom("11")
+		} else if (enteredPortalB() || enteredSolidPortalB()) {
+			if (emergeFrom("8")) {}
+			else emergeFrom("10");
 		}
 
 		// Test collision with floor
@@ -164,7 +224,9 @@ export default class Hopper {
 				if (gameBoard[gridY + 1][gridX] == config.blocks.leftArrow) {
 					// Left arrow
 					this.direction = "left";
-				} else if (gameBoard[gridY + 1][gridX] == config.blocks.rightArrow) {
+				} else if (
+					gameBoard[gridY + 1][gridX] == config.blocks.rightArrow
+				) {
 					this.direction = "right";
 				}
 			}

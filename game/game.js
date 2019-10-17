@@ -54,8 +54,14 @@ export const config = {
 		leftArrow: "5",
 		rightArrow: "6",
 		badSpawnPoint: "7",
+		portalA: "8",
+		portalB: "9",
+		solidPortalA: "10",
+		solidPortalB: "11",
 		solid: ["1", "2", "5", "6"],
-		permeable: ["0", "3", "4", "7"]
+		permeable: ["0", "3", "4", "7", "8", "9", "10", "11"],
+		canBeMoved: ["1", "8", "9"],
+		portals: ["8", "9", "10", "11"],
 	},
 
 	hopper: {
@@ -87,7 +93,11 @@ export const config = {
 		spawn: "blue",
 		leftArrow: "green",
 		rightArrow: "green",
-		badSpawn: "red"
+		badSpawn: "red",
+		portalA: "lime",
+		portalB: "aqua",
+		solidPortalA: "lime",
+		solidPortalB: "aqua"
 	}
 };
 
@@ -100,7 +110,11 @@ config.colors.list = [
 	config.colors.exit,
 	config.colors.leftArrow,
 	config.colors.rightArrow,
-	config.colors.badSpawn
+	config.colors.badSpawn,
+	config.colors.portalA,
+	config.colors.portalB,
+	config.colors.solidPortalA,
+	config.colors.solidPortalB,
 ];
 
 export const editor = {

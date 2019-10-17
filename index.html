@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="./style.css" />
 		<title>Block Hoppers</title>
 	</head>
 	<body>
@@ -36,8 +36,9 @@
 							<input type="number" class="config-input" id="new-hoppers-to-save" min="1" placeholder="# hoppers"><br>
 							<input type="number" class="config-input" id="new-perfect" min="1" placeholder="# clicks for perfect">
 						</div>
-						<div class="row" id="tiles">
-							<div
+						<div id="tiles">
+							<div class="row">
+								<div
 								class="tile-icon"
 								id="block"
 								data-block-type="1"
@@ -54,10 +55,10 @@
 							></div>
 
 							<div class="tile-icon" id="left-arrow" data-block-type="5">
-								<img src="./assets/leftarrow.png" width="32" height="32">
+								<img src="/assets/leftarrow.png" width="32" height="32">
 							</div>
 							<div class="tile-icon" id="left-arrow" data-block-type="6">
-								<img src="./assets/rightarrow.png" width="32" height="32">
+								<img src="/assets/rightarrow.png" width="32" height="32">
 							</div>
 							<div
 								class="tile-icon"
@@ -74,6 +75,16 @@
 								id="bad-spawn-point"
 								data-block-type="7"
 							></div>
+
+							</div>
+							
+							<div class="row">
+								<div class="tile-icon" id="portal-a" data-block-type="8"></div>
+								<div class="tile-icon" id="portal-b" data-block-type="9"></div>
+								<div class="tile-icon" id="solid-portal-a" data-block-type="10"></div>
+								<div class="tile-icon" id="solid-portal-b" data-block-type="11"></div>
+							</div>
+
 						</div>
 				</div>
 

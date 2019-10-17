@@ -154,9 +154,29 @@ body {
 	background-color: red;
 }
 
+.tile-icon#portal-a {
+	background-color: lime;
+	border-radius: 100px;
+}
+.tile-icon#portal-b {
+	background-color: aqua;
+	border-radius: 100px;
+}
+
+.tile-icon#solid-portal-a {
+	background-color: lime;
+}
+.tile-icon#solid-portal-b {
+	background-color: aqua;
+}
+
+
+
+
 .tile-icon.selected {
 	border: 2px solid #eee;
 }
+
 
 .hidden {
 	display: none;

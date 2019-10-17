@@ -73,7 +73,7 @@ export function setHomeAddresses() {
 	badSpawnPoints.splice(0, badSpawnPoints.length);
 	for (let y = 0; y < config.board.size; y++) {
 		for (let x = 0; x < config.board.size; x++) {
-			if (gameBoard[y][x] == "1") {
+			if (config.blocks.canBeMoved.includes(gameBoard[y][x])) {
 				homeAddresses.push({
 					home: { x, y },
 					current: { x, y }

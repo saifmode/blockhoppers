@@ -4,18 +4,19 @@ import { config } from "../game.js";
 import { gameBoard } from "../game.js";
 import { level } from "../game.js";
 import { homeAddresses } from "../game.js";
-import { selector } from "../game.js"
+import { selector } from "../game.js";
 
 export function drawGameBoard() {
 	for (let y = 0; y < config.board.size; y++) {
 		for (let x = 0; x < config.board.size; x++) {
-			// if (!selector.draggingBlock) drawAnchors();\	
-			if (config.grid)
-				drawGrid(x, y);
-
+			// if (!selector.draggingBlock) drawAnchors();\
+			if (config.grid) drawGrid(x, y);
+			let background
 			switch (gameBoard[y][x]) {
 				case "0":
-					let background = level.paused ? "#003300" : config.colors.empty;
+					background = level.paused
+						? "#003300"
+						: config.colors.empty;
 					drawBlock(x, y, background);
 					break;
 				case "1":
@@ -41,11 +42,29 @@ export function drawGameBoard() {
 				case "7":
 					drawBlock(x, y, config.colors.badSpawn);
 					break;
+				case "8":
+					background = level.paused
+						? "#003300"
+						: config.colors.empty;
+					drawBlock(x, y, background);
+					drawCircle(x, y, config.colors.portalA);
+					break;
+				case "9":
+					background = level.paused
+						? "#003300"
+						: config.colors.empty;
+					drawBlock(x, y, background);
+					drawCircle(x, y, config.colors.portalB);
+					break;
+				case "10":
+					drawBlock(x, y, config.colors.immovable);
+					drawCircle(x, y, config.colors.portalA);
+					break;
+				case "11":
+					drawBlock(x, y, config.colors.immovable);
+					drawCircle(x, y, config.colors.portalB);
+					break;
 			}
-
-			
-
-
 		}
 	}
 
@@ -82,6 +101,23 @@ export function drawGameBoard() {
 			y * config.board.spacing,
 			x * config.board.spacing + config.board.spacing,
 			y * config.board.spacing + config.board.spacing
+		);
+		c.fill();
+		c.closePath();
+		c.restore();
+	}
+
+	function drawCircle(x, y, color) {
+		c.save();
+		c.beginPath();
+		c.fillStyle = color;
+		c.arc(
+			x * config.board.spacing + config.board.spacing / 2,
+			y * config.board.spacing + config.board.spacing / 2,
+			config.board.spacing / 2,
+			0,
+			Math.PI * 2,
+			true
 		);
 		c.fill();
 		c.closePath();
