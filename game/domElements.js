@@ -1,4 +1,13 @@
 export const tileIcons = document.querySelectorAll(".tile-icon");
+export const tile_leftArrow = document.getElementById("left-arrow");
+export const tile_rightArrow = document.getElementById("right-arrow");
+export const tile_portalA = document.getElementById('portal-a');
+export const tile_portalB = document.getElementById('portal-b');
+export const tile_solidPortalA = document.getElementById('solid-portal-a');
+export const tile_solidPortalB = document.getElementById('solid-portal-b');
+export const tile_movableArrowLeft = document.getElementById('movable-arrow-left');
+export const tile_movableArrowRight = document.getElementById("movable-arrow-right");
+export const tile_badSpawnPoint = document.getElementById("bad-spawn-point");
 
 export const btn_backToUnedited = document.getElementById("back-to-unedited");
 export const btn_levelEditor = document.getElementById("level-editor");

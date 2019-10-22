@@ -64,6 +64,15 @@ export function drawGameBoard() {
 					drawBlock(x, y, config.colors.immovable);
 					drawCircle(x, y, config.colors.portalB);
 					break;
+				case "12":
+					drawBlock(x, y, "orange");
+					drawMovableLeftArrow(x, y);
+					break;
+				case "13":
+					drawBlock(x, y, "orange");
+					drawMovableRightArrow(x, y);
+					break;
+
 			}
 		}
 	}
@@ -155,6 +164,57 @@ export function drawGameBoard() {
 		c.beginPath();
 		c.fillStyle = config.colors.movable;
 		c.strokeStyle = config.colors.movable;
+		c.moveTo(
+			x * config.board.spacing + config.board.spacing,
+			y * config.board.spacing + config.board.spacing / 2
+		);
+		c.lineTo(x * config.board.spacing, y * config.board.spacing);
+		c.lineTo(
+			x * config.board.spacing,
+			y * config.board.spacing + config.board.spacing
+		);
+		c.lineTo(
+			x * config.board.spacing + config.board.spacing,
+			y * config.board.spacing + config.board.spacing / 2
+		);
+		c.stroke();
+		c.fill();
+		c.restore();
+	}
+
+	function drawMovableLeftArrow(x, y) {
+		c.save();
+		c.beginPath();
+		c.fillStyle = config.colors.movable;
+		c.strokeStyle = config.colors.empty;
+		c.lineWidth = 2;
+		c.moveTo(
+			x * config.board.spacing,
+			y * config.board.spacing + config.board.spacing / 2
+		);
+		c.lineTo(
+			x * config.board.spacing + config.board.spacing,
+			y * config.board.spacing
+		);
+		c.lineTo(
+			x * config.board.spacing + config.board.spacing,
+			y * config.board.spacing + config.board.spacing
+		);
+		c.lineTo(
+			x * config.board.spacing,
+			y * config.board.spacing + config.board.spacing / 2
+		);
+		c.stroke();
+		c.fill();
+		c.restore();
+	}
+
+	function drawMovableRightArrow(x, y) {
+		c.save();
+		c.beginPath();
+		c.fillStyle = config.colors.movable;
+		c.strokeStyle = config.colors.empty;
+		c.lineWidth = 2;
 		c.moveTo(
 			x * config.board.spacing + config.board.spacing,
 			y * config.board.spacing + config.board.spacing / 2

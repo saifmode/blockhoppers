@@ -170,7 +170,13 @@ body {
 	background-color: aqua;
 }
 
+.tile-icon#movable-arrow-left {
+	background-color: purple;
+}
 
+.tile-icon#movable-arrow-right {
+	background-color: #993393;
+}
 
 
 .tile-icon.selected {

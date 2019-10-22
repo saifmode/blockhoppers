@@ -87,10 +87,7 @@ export function populateLevelSelector() {
 		);
 	}
 
-	// console.log(completedLevels)
-
 	for (let i = 0; i < completedLevels + 1; i++) {
-		// console.log(i)
 		let newLevelOptionNode = document.createElement("option");
 		let whichLevel = document.createTextNode("Level " + i.toString());
 		newLevelOptionNode.appendChild(whichLevel);
@@ -100,4 +97,34 @@ export function populateLevelSelector() {
 	}
 }
 
+export function addBonusTileIcons() {
+	if (!window.localStorage.getItem("completedLevels")) {
+		window.localStorage.setItem("completedLevels", "0");
+	} else {
+		setCompletedLevels(
+			JSON.parse(window.localStorage.getItem("completedLevels"))
+		);
+	}
+
+	if (completedLevels >= 10) {
+		dom.tile_leftArrow.classList.remove("hidden");
+		dom.tile_rightArrow.classList.remove("hidden");
+	}
+
+	if (completedLevels >= 23) {
+		dom.tile_badSpawnPoint.classList.remove("hidden");
+	}
+
+	if (completedLevels >= 27) {
+		dom.tile_portalA.classList.remove("hidden");
+		dom.tile_portalB.classList.remove("hidden");
+		dom.tile_solidPortalA.classList.remove("hidden");
+		dom.tile_solidPortalB.classList.remove("hidden");
+	}
+
+	if (completedLevels >= 42) {
+		dom.tile_movableArrowLeft.classList.remove("hidden");
+		dom.tile_movableArrowRight.classList.remove("hidden");
+	}
+}
 

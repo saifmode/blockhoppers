@@ -262,7 +262,8 @@ export default class Selector {
 		c.save();
 		c.beginPath();
 		c.fillStyle = "orange";
-		if (this.whatBlockWas == config.blocks.movable) {
+		if (config.blocks.canBeMoved.includes(this.whatBlockWas) &&
+			!config.blocks.portals.includes(this.whatBlockWas)) {
 			c.fillRect(
 				this.x,
 				this.y,

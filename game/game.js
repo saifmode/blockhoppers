@@ -58,9 +58,13 @@ export const config = {
 		portalB: "9",
 		solidPortalA: "10",
 		solidPortalB: "11",
-		solid: ["1", "2", "5", "6"],
+		movableLeftArrow: "12",
+		movalbeRightArrow: "13",
+		leftArrows: ["5", "12"],
+		rightArrows: ["6", "13"],
+		solid: ["1", "2", "5", "6", "12", "13"],
 		permeable: ["0", "3", "4", "7", "8", "9", "10", "11"],
-		canBeMoved: ["1", "8", "9"],
+		canBeMoved: ["1", "8", "9", "12", "13"],
 		portals: ["8", "9", "10", "11"],
 	},
 
@@ -97,7 +101,9 @@ export const config = {
 		portalA: "lime",
 		portalB: "aqua",
 		solidPortalA: "lime",
-		solidPortalB: "aqua"
+		solidPortalB: "aqua",
+		movableArrowLeft: "purple",
+		movableArrowRight: "#993393"
 	}
 };
 
@@ -115,6 +121,8 @@ config.colors.list = [
 	config.colors.portalB,
 	config.colors.solidPortalA,
 	config.colors.solidPortalB,
+	config.colors.movableArrowLeft,
+	config.colors.movableArrowRight
 ];
 
 export const editor = {
@@ -295,5 +303,6 @@ function gameLoop() {
 }
 
 domFunctions.populateLevelSelector();
+domFunctions.addBonusTileIcons();
 init();
 gameLoop();

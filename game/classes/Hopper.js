@@ -44,8 +44,7 @@ export default class Hopper {
 		let rollingOntoLeftArrow = () => {
 			try {
 				if (
-					gameBoard[gridY + 1][gridX + 1] ==
-						config.blocks.leftArrow &&
+					config.blocks.leftArrows.includes(gameBoard[gridY + 1][gridX + 1]) &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -60,8 +59,7 @@ export default class Hopper {
 		let rollingOntoRightArrow = () => {
 			try {
 				if (
-					gameBoard[gridY + 1][gridX - 1] ==
-						config.blocks.rightArrow &&
+					config.blocks.rightArrows.includes(gameBoard[gridY + 1][gridX - 1]) &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -76,7 +74,7 @@ export default class Hopper {
 		let isRollingOverLeftArrow = () => {
 			try {
 				if (
-					gameBoard[gridY + 1][gridX] == config.blocks.leftArrow &&
+					config.blocks.leftArrows.includes(gameBoard[gridY + 1][gridX]) &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -86,7 +84,7 @@ export default class Hopper {
 			} catch {
 				if (
 					gridY == config.board.size - 1 &&
-					gameBoard[0][gridX] == config.blocks.leftArrow &&
+					config.blocks.leftArrows.includes(gameBoard[0][gridX]) &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -98,7 +96,7 @@ export default class Hopper {
 
 		let isRollingOverRightArrow = () => {
 			try {
-				if (gameBoard[gridY + 1][gridX] == config.blocks.rightArrow) {
+				if (config.blocks.rightArrows.includes(gameBoard[gridY + 1][gridX])) {
 					return true;
 				} else {
 					return false;
@@ -106,7 +104,7 @@ export default class Hopper {
 			} catch {
 				if (
 					gridY == config.board.size - 1 &&
-					gameBoard[0][gridX] == config.blocks.rightArrow &&
+					config.blocks.rightArrows.includes(gameBoard[0][gridX]) &&
 					this.movement == "rolling"
 				) {
 					return true;
@@ -221,11 +219,11 @@ export default class Hopper {
 			if (this.bottom + this.dy > px_blockTop) {
 				this.y = px_blockTop - this.radius; // Correcting position
 				this.movement = "rolling";
-				if (gameBoard[gridY + 1][gridX] == config.blocks.leftArrow) {
+				if (config.blocks.leftArrows.includes(gameBoard[gridY + 1][gridX])) {
 					// Left arrow
 					this.direction = "left";
 				} else if (
-					gameBoard[gridY + 1][gridX] == config.blocks.rightArrow
+					config.blocks.rightArrows.includes(gameBoard[gridY + 1][gridX])
 				) {
 					this.direction = "right";
 				}
